@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.io.hdw_io.Encoder;
@@ -23,6 +24,8 @@ import frc.util.PropMath;
  */
 public class Drive {
 
+    public static PWM leftDrv = IO.leftDrv;
+    public static PWM rightDrv = IO.rightDrv;
     private static int state;
 
     private static boolean invToggle; // toggles between inverted and not
@@ -32,19 +35,9 @@ public class Drive {
 
     private static double scale = -0.5;
 
-    // TODO: Need to see if this split modes will work when switching between them.
-    // Don't think will work. Don't think we can do this. May not be able to
-    // send cmds to slaves by DiffDrv AND define Followers.
-    // Assignments used by ControlMode. Slaves "follow" masters.
-    // private static TalonSRX left = IO.drvMasterTSRX_L;
-    // private static TalonSRX right = IO.drvMasterTSRX_R;
-    // private static VictorSPX leftSlave = IO.drvFollowerVSPX_L;
-    // private static VictorSPX rightSlave = IO.drvFollowerVSPX_R;
-    private static Encoder encL = IO.drvEnc_L;
-    private static Encoder encR = IO.drvEnc_R;
-
+   
     // Assignments used by DiffDrv. Slaves sent same command.
-    private static DifferentialDrive diffDrv_M = IO.diffDrv_M;
+    //private static DifferentialDrive diffDrv_M = IO.diffDrv_M;
     // private static DifferentialDrive diffDrv_S = new DifferentialDrive(IO.drvFollowerVSPX_L, IO.drvFollowerVSPX_R);
 
     private static Steer steer = new Steer();
@@ -128,8 +121,6 @@ public class Drive {
     // Update Drive mode. Called from Robot.
     public static void update() {
         if(JS_IO.btnRstGyro.onButtonPressed()){     //Testing location
-            IO.navX.reset();
-            IO.resetLoc();
         } 
         determ();
         sdbUpdate();
@@ -151,25 +142,10 @@ public class Drive {
                 scaled = true;
                 inverted = true;
                 break;
-            case 5: // reverse no scaled, swaps axes
+            case 3: // reverse no scaled, swaps axes
                 cmdUpdate(JS_IO.axRightDrive.get(), JS_IO.axLeftDrive.get());
                 scaled = false;
                 inverted = true;
-                break;
-            // TODO: This doesn't work. Talons followers don't work in Diff Drive.
-            case 3: // hold 0
-                steer.steerTo(0, 100.0, 0.0);
-                strCmd = steer.update(hdgFB, distFB());
-                hdgOut = strCmd[0];
-                // diffDrv_M.arcadeDrive(JS_IO.axLeftDrive.get(), hdgOut, false);
-                // diffDrv_S.arcadeDrive(JS_IO.axLeftDrive.get(), hdgOut, false);
-                break;
-            case 4: // hold 180
-                steer.steerTo(180, 100.0, 0.0);
-                strCmd = steer.update(hdgFB, distFB());
-                hdgOut = strCmd[0];
-                // diffDrv_M.arcadeDrive(JS_IO.axLeftDrive.get(), hdgOut, false);
-                // diffDrv_S.arcadeDrive(JS_IO.axLeftDrive.get(), hdgOut, false);
                 break;
             default:
                 cmdUpdate(0, 0);
@@ -181,21 +157,8 @@ public class Drive {
     public static void sdbUpdate() {
         SmartDashboard.putNumber("Driver State", state);
         scale = SmartDashboard.getNumber("Drive Scale", -0.5);
-        SmartDashboard.putNumber("Right Drive Enc", encL.ticks());
-        SmartDashboard.putNumber("Left Drive Enc", encR.ticks());
-        SmartDashboard.putNumber("dist L", encL.feet());
-        SmartDashboard.putNumber("dist R", encR.feet());
         SmartDashboard.putBoolean("scaled", scaled);
         SmartDashboard.putBoolean("inverted", inverted);
-
-        // Location test
-        SmartDashboard.putNumber("ALoc/Angle", IO.navX.getAngle());
-        SmartDashboard.putNumber("ALoc/Distance", IO.getDeltaD());
-        SmartDashboard.putNumber("ALoc/X", IO.getCoorX());
-        SmartDashboard.putNumber("ALoc/Y", IO.getCoorY());
-        SmartDashboard.putNumberArray("ALoc/arXY", IO.getCoor());
-        SmartDashboard.putNumber("ALoc/arX", IO.getCoor()[0]);
-        SmartDashboard.putNumber("ALoc/arY", IO.getCoor()[1]);
     }
 
     public static int getState() {
@@ -203,16 +166,7 @@ public class Drive {
     }
 
     public static void cmdUpdate(double lSpeed, double rSpeed) {
-        // left.set(ControlMode.PercentOutput, lSpeed);
-        // right.set(ControlMode.PercentOutput, -rSpeed);
-        diffDrv_M.tankDrive(lSpeed, rSpeed);
-        // IO.follow();
-        // leftSlave.set(ControlMode.PercentOutput, lSpeed);
-        // rightSlave.set(ControlMode.PercentOutput, rSpeed);
-    }
-
-    private static double distFB() {
-        dist_Avg = (encL.feet() + encR.feet()) / 2.0;
-        return dist_Avg;
+        leftDrv.setSpeed(lSpeed);
+        rightDrv.setSpeed(-rSpeed);
     }
 }

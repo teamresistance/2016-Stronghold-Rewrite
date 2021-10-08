@@ -13,7 +13,7 @@ Returns 0.0 for respective item when within DB.
 Also limits acceleration, increase in out, to respective Xcl value.
 */
 
-//import frc.util.PropMath;
+import frc.util.PropMath;
 
 public class Steer {
     private double drvCmds[] = { 0.0, 0.0 }; // Cmds X, Y - Rot, FwdBkwd

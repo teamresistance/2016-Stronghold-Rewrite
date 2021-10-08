@@ -7,8 +7,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.io.IO;
+import frc.robot.io.hdw_io.IO;
 import frc.robot.io.joysticks.JS_IO;
+import frc.robot.subsystem.drive.Drive;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -83,9 +84,10 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    JS_IO.update();
-    IO.leftDRV.setSpeed(JS_IO.gamePad.getRawAxis(1));
-    IO.rightDRV.setSpeed(JS_IO.gamePad.getRawAxis(5));
+  JS_IO.update();
+  Drive.update();
+    // IO.leftDrv.setSpeed(JS_IO.gamePad.getRawAxis(1));
+    // IO.rightDrv.setSpeed(JS_IO.gamePad.getRawAxis(5));
 
     SmartDashboard.putNumber("JS/Left", JS_IO.gamePad.getRawAxis(1));
     SmartDashboard.putNumber("JS/Right", JS_IO.gamePad.getRawAxis(5));
