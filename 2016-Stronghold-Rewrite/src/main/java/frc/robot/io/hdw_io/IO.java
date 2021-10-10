@@ -2,23 +2,22 @@ package frc.robot.io.hdw_io;
 
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.PWM;
-import edu.wpi.first.wpilibj.PWMSpeedController;
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
-import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.wpilibj.I2C;
+// import edu.wpi.first.wpilibj.PWM;
+// import edu.wpi.first.wpilibj.PWMSpeedController;
+// import edu.wpi.first.wpilibj.AnalogPotentiometer;
+// import edu.wpi.first.wpilibj.Counter;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 // import com.revrobotics.ColorSensorV3;
 
 /* temp to fill with latest faults */
-import com.ctre.phoenix.motorcontrol.*;
-import com.ctre.phoenix.motorcontrol.can.*;
+// import com.ctre.phoenix.motorcontrol.*;
+// import com.ctre.phoenix.motorcontrol.can.*;
 
 public class IO {
     // navX
@@ -37,9 +36,9 @@ public class IO {
     //public static DifferentialDrive diffDrv = new DifferentialDrive(leftDrv, leftDrv);
     
     // Drive, assign snorfler as front.  Front can be swapped.
-    public static VictorSP drvMtrA_L = new VictorSP(0); // Cmds left wheels
-    public static VictorSP drvMtrA_R = new VictorSP(1); // Cmds right wheels
-    public static DifferentialDrive diffDrv_M = new DifferentialDrive(drvMtrA_L, drvMtrA_R);
+    public static VictorSP drvMtrAB_L = new VictorSP(0); // Cmds left wheels
+    public static VictorSP drvMtrAB_R = new VictorSP(1); // Cmds right wheels
+    public static DifferentialDrive diffDrv_M = new DifferentialDrive(drvMtrAB_L, drvMtrAB_R);
     
     public static final double drvMasterTPF_L = 368.4;  // 1024 t/r (0.5' * 3.14)/r 9:60 gr = 385.4  calibrated= 364.63
     public static final double drvMasterTPF_R = -368.4; // 1024 t/r (0.5' * 3.14)/r 9:60 gr = 385.4  calibrated= 364.63
