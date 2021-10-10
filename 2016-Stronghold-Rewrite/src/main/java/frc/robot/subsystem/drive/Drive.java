@@ -117,8 +117,8 @@ public class Drive {
         }
         // System.out.println("Drive-" + diffType + ":\tlSpd: " + lSpdY + "\trSpdRot: "
         // + rSpdRot_XY);
-        SmartDashboard.putNumber("Drive/MtrL Out", IO.drvMtrA_L.get());
-        SmartDashboard.putNumber("Drive/MtrR Out", IO.drvMtrA_R.get());
+        SmartDashboard.putNumber("Drive/MtrL Out", IO.drvMtrAB_L.get());
+        SmartDashboard.putNumber("Drive/MtrR Out", IO.drvMtrAB_R.get());
     }
 
     /**
