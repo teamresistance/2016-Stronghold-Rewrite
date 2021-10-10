@@ -6,18 +6,6 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-// import edu.wpi.first.wpilibj.I2C;
-// import edu.wpi.first.wpilibj.PWM;
-// import edu.wpi.first.wpilibj.PWMSpeedController;
-// import edu.wpi.first.wpilibj.AnalogPotentiometer;
-// import edu.wpi.first.wpilibj.Counter;
-// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-// import com.revrobotics.ColorSensorV3;
-
-/* temp to fill with latest faults */
-// import com.ctre.phoenix.motorcontrol.*;
-// import com.ctre.phoenix.motorcontrol.can.*;
 
 public class IO {
     // navX
@@ -33,15 +21,15 @@ public class IO {
     // Drive
     // public static PWM leftDrv = new PWM(0); // Cmds left wheels
     // public static PWM rightDrv = new PWM(1); // Cmds right wheels
-    //public static DifferentialDrive diffDrv = new DifferentialDrive(leftDrv, leftDrv);
+    // public static DifferentialDrive diffDrv = new DifferentialDrive(leftDrv, leftDrv);
     
     // Drive, assign snorfler as front.  Front can be swapped.
     public static VictorSP drvMtrAB_L = new VictorSP(0); // Cmds left wheels
     public static VictorSP drvMtrAB_R = new VictorSP(1); // Cmds right wheels
     public static DifferentialDrive diffDrv_M = new DifferentialDrive(drvMtrAB_L, drvMtrAB_R);
-    
-    public static final double drvMasterTPF_L = 368.4;  // 1024 t/r (0.5' * 3.14)/r 9:60 gr = 385.4  calibrated= 364.63
-    public static final double drvMasterTPF_R = -368.4; // 1024 t/r (0.5' * 3.14)/r 9:60 gr = 385.4  calibrated= 364.63
+    //--- Encoders do not existing.  Added for other SW.
+    public static final double drvTPF_L = 368.4;  // 1024 t/r (0.5' * 3.14)/r 9:60 gr = 385.4  calibrated= 364.63
+    public static final double drvTPF_R = -368.4; // 1024 t/r (0.5' * 3.14)/r 9:60 gr = 385.4  calibrated= 364.63
     // public static Encoder drvEnc_L = new Encoder(drvMasterTSRX_L, drvMasterTPF_L);  //Interface for feet, ticks, reset
     // public static Encoder drvEnc_R = new Encoder(drvMasterTSRX_R, drvMasterTPF_R);
     public static Encoder drvEnc_L = new Encoder(10,11);  //Interface for feet, ticks, reset
@@ -49,27 +37,37 @@ public class IO {
     public static void drvFeetRst() { drvEnc_L.reset(); drvEnc_R.reset(); }
     public static double drvFeet() { return (drvEnc_L.getDistance() + drvEnc_R.getDistance()) / 2.0; }
 
-
-
     // Snorfler
-    // public static Victor snorfFeedMain = new Victor(9);
-    // public static Victor snorfFeedScdy = new Victor(6);
-    // public static ISolenoid snorflerExt = new InvertibleSolenoid(22, 6); // Extends both feeders
-    // public static InvertibleDigitalInput snorfHasBall = new InvertibleDigitalInput(2, false);
+    public static InvertibleSolenoid snorflerExtSV = new InvertibleSolenoid(0, 3, false);
+	public static VictorSP snorflerMotor = new VictorSP(3);
+	public static InvertibleDigitalInput hasBallSensor = new InvertibleDigitalInput(0, true);
 
-    // // Climb
-    // public static Victor climberHoist = new Victor(3); // Extends climber
-    // public static ISolenoid climberExt = new InvertibleSolenoid(22, 7);
+    //Catapult
+	public static InvertibleSolenoid catapultSV = new InvertibleSolenoid(0, 5) ;
 
-  
-    // public static ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
+    //Antlers
+	public static InvertibleSolenoid antlerSV = new InvertibleSolenoid(0, 1) ;
 
-    // public static NavXIMU imu = new NavXIMU();
+    //Climber
+    public static InvertibleSolenoid climberTiltSV = new InvertibleSolenoid(0, 2) ;
+	public static VictorSP climbMotor = new VictorSP(2);    //+Cmd is climb up
+	
+	public static InvertibleDigitalInput bottomClimberES = new InvertibleDigitalInput(5, true);
+	public static InvertibleDigitalInput middleClimberES = new InvertibleDigitalInput(4, true);
+	public static InvertibleDigitalInput topClimberES = new InvertibleDigitalInput(3, false);
+
+    //Flipper
+    public static InvertibleSolenoid flipperSV = new InvertibleSolenoid(0, 4) ;
+	public static InvertibleDigitalInput flipperDnES = new InvertibleDigitalInput(2, true);
+	public static InvertibleDigitalInput flipperUpES = new InvertibleDigitalInput(1, true);
 
     // Initialize any hardware here
     public static void init() {
-        drvEnc_L.setDistancePerPulse(1/drvMasterTPF_L);
-        drvEnc_R.setDistancePerPulse(1/drvMasterTPF_R);
+        drvMtrAB_L.setInverted(true);
+        drvMtrAB_R.setInverted(true);
+        drvEnc_L.setDistancePerPulse(1/drvTPF_L);
+        drvEnc_R.setDistancePerPulse(1/drvTPF_R);
+        climbMotor.setInverted(false);
     }
 
     public static void update() {
