@@ -26,8 +26,8 @@ public class IO {
     // PDP
     public static PowerDistributionPanel pdp = new PowerDistributionPanel(21);
 
-    // Air
-    public static Compressor compressor = new Compressor(22);
+    // Air compressor
+    public static Compressor compressor = new Compressor(); //Default CAN Adr is 0 for PCM.
     public static Relay compressorRelay = new Relay(0);
 
     // Drive

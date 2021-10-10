@@ -5,7 +5,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.io.hdw_io.IO;
 // import frc.robot.io.hdw_io.IO;
 import frc.robot.io.joysticks.JS_IO;
 import frc.robot.subsystem.drive.Drive;
@@ -28,6 +30,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         JS_IO.init();
+        Drive.init();
     }
 
     /**
@@ -41,20 +44,10 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
+        IO.compressorRelay.set(IO.compressor.enabled() ? Value.kOn : Value.kOff);
     }
 
-    /**
-     * This autonomous (along with the chooser code above) shows how to select
-     * between different autonomous modes using the dashboard. The sendable chooser
-     * code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard,
-     * remove all of the chooser code and uncomment the getString line to get the
-     * auto name from the text box below the Gyro
-     *
-     * <p>
-     * You can add additional auto modes by adding additional comparisons to the
-     * switch structure below with additional strings. If using the SendableChooser
-     * make sure to add them to the chooser code above as well.
-     */
+    /** This function is called once when autonomous is enabled. */
     @Override
     public void autonomousInit() {
     }
@@ -74,11 +67,6 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         JS_IO.update();
         Drive.update();
-        // IO.leftDrv.setSpeed(JS_IO.gamePad.getRawAxis(1));
-        // IO.rightDrv.setSpeed(JS_IO.gamePad.getRawAxis(5));
-
-        SmartDashboard.putNumber("JS/Left", JS_IO.gamePad.getRawAxis(1));
-        SmartDashboard.putNumber("JS/Right", JS_IO.gamePad.getRawAxis(5));
     }
 
     /** This function is called once when the robot is disabled. */
