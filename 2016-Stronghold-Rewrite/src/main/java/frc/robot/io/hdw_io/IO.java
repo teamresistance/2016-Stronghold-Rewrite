@@ -37,6 +37,10 @@ public class IO {
     public static void drvFeetRst() { drvEnc_L.reset(); drvEnc_R.reset(); }
     public static double drvFeet() { return (drvEnc_L.getDistance() + drvEnc_R.getDistance()) / 2.0; }
 
+    public static InvertibleSolenoid frntIsCmbrLED1 = new InvertibleSolenoid(0, 6, false);
+    public static InvertibleSolenoid frntIsCmbrLED2 = new InvertibleSolenoid(0, 0, false);
+    public static InvertibleSolenoid frntIsSnrfLED3 = new InvertibleSolenoid(0, 7, false);
+
     // Snorfler
     public static InvertibleSolenoid snorflerExtSV = new InvertibleSolenoid(0, 3, false);
 	public static VictorSP snorflerMotor = new VictorSP(3);
