@@ -18,12 +18,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-// import frc.robot.io.joysticks.Axis;
-// import frc.robot.io.joysticks.Button;
-// import frc.robot.io.joysticks.Pov;
-
-//TODO: ASSIGN BUTTON PORTS FOR EACH BUTTON INITIALIZED !!!
-
 //Declares all joysticks, buttons, axis & pov's.
 public class JS_IO {
     public static int jsConfig = 0; // 0=Joysticks, 1=gamePad only, 2=left Joystick only
@@ -34,10 +28,8 @@ public class JS_IO {
     public static Joystick coJoystick = new Joystick(2); // Co-Dvr JS
     public static Joystick gamePad = new Joystick(3); // Normal mode only (not Dual Trigger mode)
     // public static Joystick neoPad = new Joystick(4); // Nintendo style gamepad
-    // public static Joystick arJS[] = { leftJoystick, rightJoystick, coJoystick,
-    // gamePad };
-    // Declare all stick control
 
+    // -------------- Declare all stick controls ---------------
     // Drive
     public static Axis axLeftDrive = new Axis();    // Left Drive
     public static Axis axRightDrive = new Axis();   // Right Drive
@@ -86,15 +78,6 @@ public class JS_IO {
     public static Button btnRstGyro = new Button();
     public static Button record = new Button();
 
-    // // Auto
-    // public static Button drive2Off = new Button();
-    // public static Button drive2Tank = new Button();
-    // public static Button drive2Arcade = new Button();
-    // public static Button drive2AutoTest = new Button();
-    // public static Button resetGyro = new Button();
-    // public static Button resetDist = new Button();
-    // public static Pov pov_SP = new Pov();
-    // public static Axis axRightX = new Axis();
 
     // Constructor
     public JS_IO() {
@@ -138,8 +121,8 @@ public class JS_IO {
         //chsr.setDefaultOption doesn't appear to work.  Shouldn't need to trap null.
         //Default MUST have a different name
         if (jsConfig != (chsr.getSelected() == null ? 0 : chsr.getSelected())) {
-            caseDefault();
-            configJS();
+            caseDefault();      //Clears ALL assignments
+            configJS();         //Assigns only those valid for choosen controller
         }
     }
 
