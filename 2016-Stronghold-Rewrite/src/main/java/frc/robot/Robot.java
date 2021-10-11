@@ -6,11 +6,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Relay.Value;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.io.hdw_io.IO;
 // import frc.robot.io.hdw_io.IO;
 import frc.robot.io.joysticks.JS_IO;
 import frc.robot.subsystem.Snorfler;
+import frc.robot.subsystem._TestButton;
 import frc.robot.subsystem.drive.Drive;
 import frc.robot.subsystem.drive.Drv_Teleop;
 
@@ -66,6 +66,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         Snorfler.init();
+        _TestButton.init();
     }
 
     /** This function is called periodically during operator control. */
@@ -74,6 +75,7 @@ public class Robot extends TimedRobot {
         JS_IO.update();
         Drive.update();
         Snorfler.update();
+        _TestButton.update();
     }
 
     /** This function is called once when the robot is disabled. */
