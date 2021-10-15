@@ -37,7 +37,7 @@ public class IO {
     // Snorfler
     public static VictorSP snorfMtr = new VictorSP(3);
     // public static Victor snorfFeedScdy = new Victor(6);
-    // public static ISolenoid snorflerExt = new InvertibleSolenoid(22, 6); // Extends both feeders
+    public static InvertibleSolenoid snorflerExtSV = new InvertibleSolenoid(22, 6); // Extends both feeders
     // public static InvertibleDigitalInput snorfHasBall = new InvertibleDigitalInput(2, false);
 
     // // Climb

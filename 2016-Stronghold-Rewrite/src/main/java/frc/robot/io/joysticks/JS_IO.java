@@ -64,7 +64,8 @@ public class JS_IO {
 
     // Snorfler
     public static Button btnTglSnorArmDn = new Button();
-    public static Button btnSnorfOn = new Button();
+    public static Button btnForwardSnorfler = new Button();
+    public static Button btnReverseSnorfler = new Button();
 
     // Turret
     public static Axis axTurretRot = new Axis(); // Rotate turret
@@ -194,7 +195,7 @@ public class JS_IO {
         btnInvOrientation.setButton(rightJoystick, 1);
 
         // snorfler buttons
-        btnSnorfOn.setButton(coJoystick, 5);
+        btnForwardSnorfler.setButton(coJoystick, 5);
         btnTglSnorArmDn.setButton(coJoystick, 3);
 
         // turret buttons
@@ -235,8 +236,9 @@ public class JS_IO {
         btnInvOrientation.setButton(gamePad, 10); // r-stick push
 
         // snorfler buttons
-        btnSnorfOn.setButton(gamePad, 9); // l-stick push
-        btnTglSnorArmDn.setButton(gamePad, 1); // A
+        btnForwardSnorfler.setButton(gamePad, 1); // A
+        btnTglSnorArmDn.setButton(gamePad, 9); // l-stick push
+        btnReverseSnorfler.setButton(gamePad, 2); // B
 
         // turret buttons
         btnLimeSearch.setButton(gamePad, 4); // Y
@@ -275,7 +277,7 @@ public class JS_IO {
         btnInvOrientation.setButton(leftJoystick, 1);
 
         // snorfler buttons
-        btnSnorfOn.setButton(rightJoystick, 5);
+        btnForwardSnorfler.setButton(rightJoystick, 5);
         btnTglSnorArmDn.setButton(rightJoystick, 3);
 
         // turret buttons
@@ -311,7 +313,7 @@ public class JS_IO {
         btnFireShooter.setButton(null, 0);
         btnIndex.setButton(null, 0);
         btnTglSnorArmDn.setButton(null, 0);
-        btnSnorfOn.setButton(null, 0);
+        btnForwardSnorfler.setButton(null, 0);
         btnLimeAim.setButton(null, 0);
         btnLimeSearch.setButton(null, 0);
         btnClimb.setButton(null, 0);

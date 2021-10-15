@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.io.hdw_io.IO;
 import frc.robot.io.joysticks.JS_IO;
+import frc.robot.subsystem.Snorfler;
 import frc.robot.subsystem.drive.Drive;
 
 /**
@@ -86,11 +87,10 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
   JS_IO.update();
   Drive.update();
+  Snorfler.update();
     // IO.leftDrv.setSpeed(JS_IO.gamePad.getRawAxis(1));
     // IO.rightDrv.setSpeed(JS_IO.gamePad.getRawAxis(5));
-
-    SmartDashboard.putNumber("JS/Left", JS_IO.gamePad.getRawAxis(1));
-    SmartDashboard.putNumber("JS/Right", JS_IO.gamePad.getRawAxis(5));
+    
   }
 
   /** This function is called once when the robot is disabled. */

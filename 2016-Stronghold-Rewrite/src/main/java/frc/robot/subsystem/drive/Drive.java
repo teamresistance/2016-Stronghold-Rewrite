@@ -160,6 +160,10 @@ public class Drive {
         scale = SmartDashboard.getNumber("Drive Scale", -0.5);
         SmartDashboard.putBoolean("scaled", scaled);
         SmartDashboard.putBoolean("inverted", inverted);
+
+        
+    SmartDashboard.putNumber("JS/Left", JS_IO.gamePad.getRawAxis(1));
+    SmartDashboard.putNumber("JS/Right", JS_IO.gamePad.getRawAxis(5));
     }
 
     public static int getState() {
