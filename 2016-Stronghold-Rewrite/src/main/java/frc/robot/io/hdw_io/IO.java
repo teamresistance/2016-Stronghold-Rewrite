@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -20,10 +21,10 @@ import com.ctre.phoenix.motorcontrol.can.*;
 
 public class IO {
     // PDP
-    public static PowerDistributionPanel pdp = new PowerDistributionPanel(21);
+    public static PowerDistributionPanel pdp = new PowerDistributionPanel(1);
 
     // Air
-    public static Compressor compressor = new Compressor(22);
+    public static Compressor compressor = new Compressor(0);
     public static Relay compressorRelay = new Relay(0);
 
     // Drive
@@ -34,7 +35,7 @@ public class IO {
 
 
     // Snorfler
-    // public static Victor snorfFeedMain = new Victor(9);
+    public static VictorSP snorfMtr = new VictorSP(3);
     // public static Victor snorfFeedScdy = new Victor(6);
     // public static ISolenoid snorflerExt = new InvertibleSolenoid(22, 6); // Extends both feeders
     // public static InvertibleDigitalInput snorfHasBall = new InvertibleDigitalInput(2, false);
