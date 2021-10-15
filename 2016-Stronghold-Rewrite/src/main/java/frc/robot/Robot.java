@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.io.hdw_io.IO;
 import frc.robot.io.joysticks.JS_IO;
 import frc.robot.subsystem.Snorfler;
+import frc.robot.subsystem.TestLed;
 import frc.robot.subsystem.drive.Drive;
 
 /**
@@ -88,6 +89,7 @@ public class Robot extends TimedRobot {
   JS_IO.update();
   Drive.update();
   Snorfler.update();
+  TestLed.update();
     // IO.leftDrv.setSpeed(JS_IO.gamePad.getRawAxis(1));
     // IO.rightDrv.setSpeed(JS_IO.gamePad.getRawAxis(5));
     

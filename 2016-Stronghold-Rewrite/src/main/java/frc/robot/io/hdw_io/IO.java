@@ -2,11 +2,14 @@ package frc.robot.io.hdw_io;
 
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.PWMSpeedController;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.Counter;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.VictorSP;
@@ -37,14 +40,21 @@ public class IO {
     // Snorfler
     public static VictorSP snorfMtr = new VictorSP(3);
     // public static Victor snorfFeedScdy = new Victor(6);
-    public static InvertibleSolenoid snorflerExtSV = new InvertibleSolenoid(22, 6); // Extends both feeders
+    public static InvertibleSolenoid snorflerExtSV = new InvertibleSolenoid(0, 3); // Extends both feeders
     // public static InvertibleDigitalInput snorfHasBall = new InvertibleDigitalInput(2, false);
 
     // // Climb
     // public static Victor climberHoist = new Victor(3); // Extends climber
     // public static ISolenoid climberExt = new InvertibleSolenoid(22, 7);
 
-  
+    public static DigitalInput ledBtn1 = new DigitalInput(3);
+    public static DigitalInput ledBtn2 = new DigitalInput(4);
+    public static DigitalInput ledBtn3 = new DigitalInput(5);
+
+    public static Solenoid led1 = new Solenoid(0);
+    public static Solenoid led2 = new Solenoid(6);
+    public static Solenoid led3 = new Solenoid(7);
+
     // public static ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
 
     // Initialize any hardware here
