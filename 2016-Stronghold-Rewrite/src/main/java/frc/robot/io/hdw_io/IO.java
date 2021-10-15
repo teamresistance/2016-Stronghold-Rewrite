@@ -28,8 +28,8 @@ public class IO {
     public static Relay compressorRelay = new Relay(0);
 
     // Drive
-    public static PWM leftDrv = new PWM(0); // Cmds left wheels
-    public static PWM rightDrv = new PWM(1); // Cmds right wheels
+    public static VictorSP leftDrv = new VictorSP(0); // Cmds left wheels
+    public static VictorSP rightDrv = new VictorSP(1); // Cmds right wheels
     //public static DifferentialDrive diffDrv = new DifferentialDrive(leftDrv, leftDrv);
     
 

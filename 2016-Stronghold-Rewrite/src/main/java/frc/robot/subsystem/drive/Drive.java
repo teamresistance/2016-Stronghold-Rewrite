@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.PWM;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.io.hdw_io.Encoder;
@@ -24,8 +25,8 @@ import frc.util.PropMath;
  */
 public class Drive {
 
-    public static PWM leftDrv = IO.leftDrv;
-    public static PWM rightDrv = IO.rightDrv;
+    public static VictorSP leftDrv = IO.leftDrv;
+    public static VictorSP rightDrv = IO.rightDrv;
     private static int state;
 
     private static boolean invToggle; // toggles between inverted and not
