@@ -59,11 +59,11 @@ public class TestLed {
         tmpState += liftMidSnsr.get() ? 2 : 0;
         tmpState += liftBotStop.get() ? 4 : 0;
 
-        tmpState = btnAllOn.isDown() ? 7 : state;   //Btn 5, all on
+        if(btnAllOn.isDown()) tmpState = 7; //GP Btn 5, all on
 
-        if(tmpState == 7 && state < 8) state = 7;   //All on but with timer
+        state = (tmpState == 7 && state > 7) ? state : tmpState;   //All on but with timer
 
-        state = eStop ? 0 : state;                  //Emergency stop, all off
+        state = eStop ? 0 : state;      //Emergency stop, all off
     }
 
     /**
@@ -98,6 +98,7 @@ public class TestLed {
                 break;
             case 7: // All on.  Wait 1 sec before turning all on
                 timer.startTimer(1.0);
+                state++;
             case 8:
                 if(timer.hasExpired()) state++;
                 break;
@@ -140,9 +141,9 @@ public class TestLed {
         SmartDashboard.putBoolean("TestLed/2. Top ES", liftTopStop.get());
         SmartDashboard.putBoolean("TestLed/3. Mid Snsr", liftMidSnsr.get());
         SmartDashboard.putBoolean("TestLed/4. Bot ES", liftBotStop.get());
-        SmartDashboard.putBoolean("TestLed/5. Lift Led1", frntLedLift1.get());
+        SmartDashboard.putBoolean("TestLed/5. Snorf Led", frntLedSnorf.get());
         SmartDashboard.putBoolean("TestLed/6. Lift Led2", frntLedLift2.get());
-        SmartDashboard.putBoolean("TestLed/7. Snorf Led", frntLedSnorf.get());
+        SmartDashboard.putBoolean("TestLed/7. Lift Led1", frntLedLift1.get());
         SmartDashboard.putNumber( "TestLed/8. Led Status", statusLed());
     }
 
