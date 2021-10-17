@@ -18,12 +18,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import frc.robot.io.joysticks.Axis;
-import frc.robot.io.joysticks.Button;
-import frc.robot.io.joysticks.Pov;
-
-//TODO: ASSIGN BUTTON PORTS FOR EACH BUTTON INITIALIZED !!!
-
 //Declares all joysticks, buttons, axis & pov's.
 public class JS_IO {
     public static int jsConfig = 0; // 0=Joysticks, 1=gamePad only, 2=left Joystick only
