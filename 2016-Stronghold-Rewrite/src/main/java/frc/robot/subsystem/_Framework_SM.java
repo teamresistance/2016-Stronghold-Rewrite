@@ -27,7 +27,7 @@ public class _Framework_SM {
      * teleopInit
      */
     public static void init() {
-
+        sbdInit();
     }
 
     /**
@@ -73,6 +73,10 @@ public class _Framework_SM {
      */
     private static void cmdUpdate(boolean bCmd, double aCmd) {
 
+    }
+
+    /** Initalize Smartdashbord items */
+    private static void sbdInit() {
     }
 
     /** Update Smartdashbord items */
