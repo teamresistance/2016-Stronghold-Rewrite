@@ -36,6 +36,7 @@ public class TestLed {
 
     // Create objects for this SM
     private static int state = 0;
+    private static int tmpState = 0;
     private static boolean eStop = false;   //From Smartdashboard
 
     private static Timer timer = new Timer(0.5);
@@ -54,13 +55,15 @@ public class TestLed {
      */
     private static void determ() {
         //Encode switches into a single number
-        state = liftTopStop.get() ? 1 : 0;
-        state += liftMidSnsr.get() ? 2 : 0;
-        state += liftBotStop.get() ? 4 : 0;
+        tmpState = liftTopStop.get() ? 1 : 0;
+        tmpState += liftMidSnsr.get() ? 2 : 0;
+        tmpState += liftBotStop.get() ? 4 : 0;
 
-        state = btnAllOn.isDown() ? 7 : state;  //Btn 5, all on
+        tmpState = btnAllOn.isDown() ? 7 : state;   //Btn 5, all on
 
-        state = eStop ? 0 : state;              //Emergency stop, all off
+        if(tmpState == 7 && state < 8) state = 7;   //All on but with timer
+
+        state = eStop ? 0 : state;                  //Emergency stop, all off
     }
 
     /**
@@ -132,7 +135,7 @@ public class TestLed {
 
     /** Update Smartdashbord items */
     private static void sbdUpdate() {
-        SmartDashboard.getBoolean("TestLed/0. Estop", eStop);   //MUST match sdbInit key
+        eStop = SmartDashboard.getBoolean("TestLed/0. Estop", eStop);   //MUST match sdbInit key
         SmartDashboard.putNumber( "TestLed/1. state", state);
         SmartDashboard.putBoolean("TestLed/2. Top ES", liftTopStop.get());
         SmartDashboard.putBoolean("TestLed/3. Mid Snsr", liftMidSnsr.get());
@@ -140,5 +143,22 @@ public class TestLed {
         SmartDashboard.putBoolean("TestLed/5. Lift Led1", frntLedLift1.get());
         SmartDashboard.putBoolean("TestLed/6. Lift Led2", frntLedLift2.get());
         SmartDashboard.putBoolean("TestLed/7. Snorf Led", frntLedSnorf.get());
+        SmartDashboard.putNumber( "TestLed/8. Led Status", statusLed());
+    }
+
+    /**
+     * @return the active state.
+     */
+    public static int getState(){
+        return state;
+    }
+
+    /**
+     * @return Encoded status of Leds: snorf, lift2, lift1.
+     */
+    public static int statusLed(){
+        return ((frntLedLift1.get() ? 1 : 0) +
+                (frntLedLift2.get() ? 2 : 0) +
+                (frntLedSnorf.get() ? 4 : 0));
     }
 }
