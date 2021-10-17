@@ -7,6 +7,9 @@ import frc.robot.io.joysticks.Button;
 import frc.robot.io.joysticks.JS_IO;
 import frc.util.Timer;
 
+/**This is a framework for a TR86 subsystem state machine.
+ * <p>Some hardware references have been left as examples.
+ */
 public class _Framework_SM {
     // Reference or Initialize hardware
     private static VictorSP snorfMtr = IO.snorfMtr;
