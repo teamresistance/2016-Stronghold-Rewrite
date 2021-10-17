@@ -15,7 +15,7 @@ public class Snorfler {
     private static VictorSP snorfMtr = IO.snorfMtr;
 
     //initialize Solenoids
-    private static InvertibleSolenoid snorfExtSV = IO.snorflerExtSV; // Lowers snorfler
+    private static InvertibleSolenoid snorfExtSV = IO.snorfExtSV; // Lowers snorfler
 
     //initialize buttons
     // private static Button btnForwardSnorfler = JS_IO.btnForwardSnorfler;
