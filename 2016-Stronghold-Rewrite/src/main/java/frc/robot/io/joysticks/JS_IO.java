@@ -5,6 +5,7 @@ Rewite Author: Jim Hofmann
 History:
 J&A - 11/6/2019 - Original Release
 JCH - 11/6/2019 - Original rework
+JCH - 10/17/2021 - Add Chooser & cleanup
 TODO: Exception for bad or unattached devices.
       Auto config based on attached devices and position?
       Add enum for jsID & BtnID?  Button(eLJS, eBtn6) or Button(eGP, eBtnA)
@@ -18,24 +19,27 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-//Declares all joysticks, buttons, axis & pov's.
+//
+/**Declares all joysticks, buttons, axis & pov's.
+ * <p>Handles various JS configuration with various button assignments.
+ */
 public class JS_IO {
-    public static int jsConfig = 0; // 0=Joysticks, 1=gamePad only, 2=left Joystick only
-                                    // 3=Mixed LJS & GP, 4=Nintendo Pad
+    //Configure possible JS combinations.  Must match configJS().
+    public static int jsConfig = 0; // 0=Joysticks, 1=2 Joysticks, 2=gamePad, 4=Nintendo Pad
+    private static SendableChooser<Integer> chsr = new SendableChooser<Integer>();
+    private static String[] chsrDesc = {"3-Joysticks", "2-Joysticks", "Gamepad"};
+    private static int[] chsrNum = {0, 1, 2};
+                                
     // Declare all possible Joysticks
     public static Joystick leftJoystick = new Joystick(0); // Left JS
     public static Joystick rightJoystick = new Joystick(1); // Right JS
     public static Joystick coJoystick = new Joystick(2); // Co-Dvr JS
     public static Joystick gamePad = new Joystick(3); // Normal mode only (not Dual Trigger mode)
     // public static Joystick neoPad = new Joystick(4); // Nintendo style gamepad
-    // public static Joystick arJS[] = { leftJoystick, rightJoystick, coJoystick,
-    // gamePad };
+
     // Declare all stick control
 
     // Drive
-    public static Axis axLeftDrive = new Axis();    // Left Drive
-    public static Axis axRightDrive = new Axis();   // Right Drive
-    
     public static Axis axLeftY = new Axis();        // Left JS Y - Added for testing in Drive3
     public static Axis axLeftX = new Axis();        // Left JS X
     public static Axis axRightY = new Axis();       // Right JS Y
@@ -45,110 +49,78 @@ public class JS_IO {
     public static Button btnInvOrientation = new Button();  // invert the orientation of the robot (joystick: forwards
                                                             // becomes backwards for robot and same for backwards)
 
-    public static Button btnSelDrv = new Button();          //Added for testing in Drive3
-    public static Button btnHoldZero = new Button();
-    public static Button btnHold180 = new Button();
+    public static Button btnSelDrv = new Button();      //In teleop manually select between tank, arcade & curvature
+    public static Button btnHoldZero = new Button();    //Hold 0 heading.  Left stick moves fwd/bkwd
+    public static Button btnHold180 = new Button();     //Hold 180 heading.  Left stick moves fwd/bkwd
 
     // Shooter
-    public static Button btnRampShooter = new Button();
-    public static Button btnFireShooter = new Button();
-
-    // Revolver
-    public static Button btnIndex = new Button();
+    public static Button btnFireShooter = new Button(); //Catapult boulder
 
     // Snorfler
-    public static Button btnToggleSnorf = new Button();
-    public static Button btnForwardSnorfler = new Button();
-    public static Button btnReverseSnorfler = new Button();
-
-    // Turret
-    public static Axis axTurretRot = new Axis(); // Rotate turret
-    public static Button btnLimeAim = new Button();
-    public static Button btnLimeSearch = new Button();
+    public static Button btnToggleSnorf = new Button();     //Toggle Snorfler up/dn
+    public static Button btnForwardSnorfler = new Button(); //Suckin the boulder
+    public static Button btnReverseSnorfler = new Button(); //Spitout the boulder
+    public static Pov povSnorfInOut = new Pov();    //Alt. for Fwd/Rev
 
     // Climb
-    public static Axis axClimb = new Axis();
-    public static Button btnClimb = new Button();
-    public static Button btnClimbOFF = new Button();
+    public static Axis axClimb = new Axis();            //To move climber up or dn
+    public static Button btnClimbTop = new Button();    //Move climber to top
+    public static Button btnClimbBot = new Button();    //Move climber to bottom
 
-    // LimeLight - AS
-    public static Button limeLightOnOff = new Button();
+    //Flipper
+    public static Button btnFlipper = new Button(); //Extend Flipper down
 
-    // All
-    public static Button allStop = new Button(); // stops all parts of the shooter sequence
-    public static Button btnStop = new Button();
-    // Misc
-    public static Button btnRstGyro = new Button();
-    public static Button record = new Button();
+    //Antler
+    public static Button btnAntler = new Button();  //Extend Antlers down
 
-    // // Auto
-    // public static Button drive2Off = new Button();
-    // public static Button drive2Tank = new Button();
-    // public static Button drive2Arcade = new Button();
-    // public static Button drive2AutoTest = new Button();
-    // public static Button resetGyro = new Button();
-    // public static Button resetDist = new Button();
-    // public static Pov pov_SP = new Pov();
-    // public static Axis axRightX = new Axis();
 
-    // Constructor
+    // Constructor.  Don't need it.  Just bc.
     public JS_IO() {
         init();
     }
 
+    /**Initialize joysticks, axises, buttons & pov's.
+     * <p>Normally called from robotInit in Robot.
+     */
     public static void init() {
-        SmartDashboard.putNumber("JS/JS_Config", jsConfig);
         chsrInit();
         configJS();
     }
 
-    private static SendableChooser<Integer> chsr = new SendableChooser<Integer>();
-    private static String[] chsrDesc = {"3-Joysticks", "2-Joysticks", "Gamepad"};
-    private static int[] chsrNum = {0, 1, 2};
-
+    /**Initialize the Joystick Chooser.  Placed on Dashboard to chose
+     * JS configuration, 3 JS's, 2 JS's or Gamepad.
+     */
     public static void chsrInit(){
         for(int i = 0; i < chsrDesc.length; i++){
             chsr.addOption(chsrDesc[i], chsrNum[i]);
         }
         chsr.setDefaultOption(chsrDesc[0] + " (Default)", chsrNum[0]);   //Default MUST have a different name
         SmartDashboard.putData("JS/Choice", chsr);
-        sdbUpdChsr();
-    }
-
-    public static void sdbUpdChsr(){
         SmartDashboard.putString("JS/Choosen", chsrDesc[chsr.getSelected()]);   //Put selected on sdb
     }
 
-    // // can put this under a button press
-    // public static void update() { // Chk for Joystick configuration
-    //     if (jsConfig != SmartDashboard.getNumber("JS/JS_Config", 0)) {
-    //     jsConfig = (int) SmartDashboard.getNumber("JS/JS_Config", 0);
-    //     caseDefault();
-    //     configJS();
-    //     }
-    // }
-
-    // can put this under a button press
+    /**Check and update Joystick configuration. */
     public static void update() { // Chk for Joystick configuration
-        //chsr.setDefaultOption doesn't appear to work.  Shouldn't need to trap null.
-        //Default MUST have a different name
-        if (jsConfig != (chsr.getSelected() == null ? 0 : chsr.getSelected())) {
+        if (jsConfig != chsr.getSelected()) {
+            jsConfig = chsr.getSelected();
             caseDefault();
             configJS();
+            SmartDashboard.putNumber("JS/JS_Config", jsConfig);
+            SmartDashboard.putString("JS/Choosen", chsrDesc[chsr.getSelected()]);   //Put selected on sdb
         }
     }
 
+    /**Call the configurator for the Joystick selected. */
     public static void configJS() { // Default Joystick else as gamepad
-        // jsConfig = (int) SmartDashboard.getNumber("JS_Config", 0);
-        jsConfig = chsr.getSelected() == null ? 0 : chsr.getSelected();
-        SmartDashboard.putNumber("JS/JS_Config", jsConfig);
+        // jsConfig = chsr.getSelected() == null ? 0 : chsr.getSelected();
+        // SmartDashboard.putNumber("JS/JS_Config", jsConfig);
 
         switch (jsConfig) {
             case 0: // Normal 3 joystick config
                 norm3JS();
                 break;
 
-                case 1: // Normal 2 joystick config No CoDrvr
+            case 1: // Normal 2 joystick config No CoDrvr
                 norm2JS();
                 break;
 
@@ -160,159 +132,167 @@ public class JS_IO {
                 System.out.println("Bad JS choice - " + jsConfig);
                 caseDefault();
                 break;
-
         }
     }
 
     // ================ Controller actions ================
 
-    // ----------- Normal 3 Joysticks -------------
+    /**
+     * ----------- Normal 3 Joysticks Configurator -------------
+     */
     private static void norm3JS() {
 
-        // All stick axisesssss
-        axLeftDrive.setAxis(leftJoystick, 1);
-        axRightDrive.setAxis(rightJoystick, 1);
-        axTurretRot.setAxis(coJoystick, 0);
-        // axClimb.setAxis(coJoystick, 1);
-
-        axLeftX.setAxis(leftJoystick, 0);       //Added to test drive3
+        // Drive
+        axLeftX.setAxis(leftJoystick, 0);
         axLeftY.setAxis(leftJoystick, 1);
         axRightX.setAxis(rightJoystick, 0);
         axRightY.setAxis(rightJoystick, 1);
 
-        // Drive buttons
-        btnSelDrv.setButton(rightJoystick, 4);     //Added to test drive3
+        btnScaledDrive.setButton(rightJoystick, 3);
+        btnInvOrientation.setButton(rightJoystick, 1);
+
+        btnSelDrv.setButton(rightJoystick, 4);
         btnHoldZero.setButton(rightJoystick, 5);
         btnHold180.setButton(rightJoystick, 6);
+
+        // Shooter
+        btnFireShooter.setButton(coJoystick, 1);
+
+        // Snorfler
+        btnToggleSnorf.setButton(coJoystick, 3);
+        btnForwardSnorfler.setButton(coJoystick, 5);
+        btnReverseSnorfler.setButton(coJoystick, 7);
+        povSnorfInOut.setPov(coJoystick, 0);
+
+        // Climb
+        axClimb.setAxis(coJoystick, 1);
+        btnClimbTop.setButton(coJoystick, 8);
+        btnClimbBot.setButton(coJoystick, 9);
+
+        //Flipper
+        btnFlipper.setButton(coJoystick, 10); //Extend Flipper down
+
+        //Antler
+        btnAntler.setButton(coJoystick, 11);  //Extend Antlers down
+
+    }
+
+    /**
+     * ----- GamePad only Configurator --------
+     */
+    private static void a_GP() {
+        // Drive
+        axLeftX.setAxis(gamePad, 0);
+        axLeftY.setAxis(gamePad, 1);
+        axRightX.setAxis(gamePad, 4);
+        axRightY.setAxis(gamePad, 5);
+
+        // btnScaledDrive.setButton(gamePad, 5);
+        // btnInvOrientation.setButton(gamePad, 10);
+
+        // btnSelDrv.setButton(gamePad, 4);
+        // btnHoldZero.setButton(gamePad, 5);
+        // btnHold180.setButton(gamePad, 6);
+
+        // Shooter
+        btnFireShooter.setButton(gamePad, 6);
+
+        // Snorfler
+        btnToggleSnorf.setButton(gamePad, 5);
+        btnForwardSnorfler.setButton(gamePad, 4);
+        btnReverseSnorfler.setButton(gamePad, 3);
+        povSnorfInOut.setPov(gamePad, 0);
+
+        // Climb
+        axClimb.setAxis(gamePad, 1);
+        btnClimbTop.setButton(gamePad, 7);
+        btnClimbBot.setButton(gamePad, 8);
+
+        //Flipper
+        btnFlipper.setButton(gamePad, 1); //Extend Flipper down
+
+        //Antler
+        btnAntler.setButton(gamePad, 2);  //Extend Antlers down
+
+    }
+
+    // 
+    /**
+     * ----------- Normal 2 Joysticks Configurator -------------
+     */
+    private static void norm2JS() {
+
+        // Drive
+        axLeftX.setAxis(leftJoystick, 0);
+        axLeftY.setAxis(leftJoystick, 1);
+        axRightX.setAxis(rightJoystick, 0);
+        axRightY.setAxis(rightJoystick, 1);
 
         btnScaledDrive.setButton(rightJoystick, 3);
         btnInvOrientation.setButton(rightJoystick, 1);
 
-        // snorfler buttons
-        btnForwardSnorfler.setButton(coJoystick, 5);
-        btnToggleSnorf.setButton(coJoystick, 3);
+        btnSelDrv.setButton(rightJoystick, 4);     //Added to test drive3
+        btnHoldZero.setButton(rightJoystick, 5);
+        btnHold180.setButton(rightJoystick, 6);
 
-        // turret buttons
-        btnLimeSearch.setButton(coJoystick, 12);
-        btnLimeAim.setButton(coJoystick, 10);
+        // Shooter
+        btnFireShooter.setButton(leftJoystick, 1);
 
-        // shooting buttons
-        btnRampShooter.setButton(coJoystick, 4);
-        btnFireShooter.setButton(coJoystick, 1);
-        btnIndex.setButton(coJoystick, 6);
+        // Snorfler
+        btnToggleSnorf.setButton(leftJoystick, 3);
+        btnForwardSnorfler.setButton(leftJoystick, 5);
+        btnReverseSnorfler.setButton(leftJoystick, 7);
+        povSnorfInOut.setPov(leftJoystick, 0);
 
-        btnStop.setButton(coJoystick, 11);
+        // Climb
+        axClimb.setAxis(leftJoystick, 0);
+        btnClimbTop.setButton(leftJoystick, 8);
+        btnClimbBot.setButton(leftJoystick, 9);
 
-        // Limelight Buttons - AS
-        limeLightOnOff.setButton(rightJoystick, 2);
-        btnRstGyro.setButton(leftJoystick, 3);
+        //Flipper
+        btnFlipper.setButton(coJoystick, 10); //Extend Flipper down
 
-        // drive2Off.setButton(leftJoystick, 10);
-        // drive2Tank.setButton(leftJoystick, 9);
-        // drive2Arcade.setButton(leftJoystick, 11);
-        // drive2AutoTest.setButton(leftJoystick, 12);
-
-        // resetDist.setButton(leftJoystick, 5);
-        // resetGyro.setButton(leftJoystick, 3);
-
-        // pov_SP.setPov(coJoystick, 1);
+        //Antler
+        btnAntler.setButton(coJoystick, 11);  //Extend Antlers down
     }
 
-    // ----- gamePad only --------
-    private static void a_GP() {
-        // All stick axisesssss
-        axLeftDrive.setAxis(gamePad, 1); // left stick Y
-        axRightDrive.setAxis(gamePad, 5); // right stick Y
-        axTurretRot.setAxis(gamePad, 4); // Neg = CW, Pos = CCW (left stick X?)
-
-        // Drive buttons
-        btnScaledDrive.setButton(gamePad, 5); // L1
-        btnInvOrientation.setButton(gamePad, 10); // r-stick push
-
-        // snorfler buttons
-        btnForwardSnorfler.setButton(gamePad, 1); // A
-        btnToggleSnorf.setButton(gamePad, 3); // 
-        btnReverseSnorfler.setButton(gamePad, 2); // B
-
-        // turret buttons
-        btnLimeSearch.setButton(gamePad, 4); // Y
-        btnLimeAim.setButton(gamePad, 6); // R1
-
-        // shooting buttons
-        btnRampShooter.setButton(gamePad, 3); // X
-        btnFireShooter.setButton(gamePad, 2); // B
-        btnIndex.setButton(gamePad, 7); // Back
-
-        btnStop.setButton(gamePad, 8); // start
-
-        // btnRstGyro.setButton(leftJoystick, 3);
-
-        // drive2Off.setButton(gamePad, 1);
-        // drive2Tank.setButton(gamePad, 2);
-        // drive2Arcade.setButton(gamePad, 3);
-        // drive2AutoTest.setButton(gamePad, 4);
-        // resetDist.setButton(gamePad, 5);
-        // resetGyro.setButton(gamePad, 6);
-
-        // pov_SP.setPov(gamePad, 0);
-    }
-
-    // ----------- Normal 2 Joysticks -------------
-    private static void norm2JS() {
-
-        // All stick axisesssss
-        axLeftDrive.setAxis(leftJoystick, 1);
-        axRightDrive.setAxis(rightJoystick, 1);
-        axTurretRot.setAxis(coJoystick, 0);
-        // axClimb.setAxis(coJoystick, 1);
-
-        // Drive buttons
-        btnScaledDrive.setButton(leftJoystick, 3);
-        btnInvOrientation.setButton(leftJoystick, 1);
-
-        // snorfler buttons
-        btnForwardSnorfler.setButton(rightJoystick, 5);
-        btnToggleSnorf.setButton(rightJoystick, 3);
-
-        // turret buttons
-        btnLimeSearch.setButton(rightJoystick, 12);
-        btnLimeAim.setButton(rightJoystick, 10);
-
-        // shooting buttons
-        btnRampShooter.setButton(rightJoystick, 4);
-        btnFireShooter.setButton(rightJoystick, 1);
-        btnIndex.setButton(rightJoystick, 6);
-
-        btnStop.setButton(rightJoystick, 11);
-
-        // Limelight Buttons - AS
-        limeLightOnOff.setButton(leftJoystick, 2);
-        btnRstGyro.setButton(rightJoystick, 7);
-
-    }
-
-    // ----------- Case Default -----------------
+    /**
+     * ----------- Case Default Configurator -----------------
+     * <p>(Clear all configurations)
+     */
     private static void caseDefault() {
-        // All stick axisesssss
-        axLeftDrive.setAxis(null, 0);
-        axRightDrive.setAxis(null, 0);
-        axTurretRot.setAxis(null, 0);
 
-        btnScaledDrive.setButton(null, 0); // scale the drive
-        btnInvOrientation.setButton(null, 0); // invert the orientation of the robot (joystick: forwards becomes
-                                              // backwards for robot and same for backwards)
+        // Drive
+        axLeftX.setAxis(null, 0);
+        axLeftY.setAxis(null, 0);
+        axRightX.setAxis(null, 0);
+        axRightY.setAxis(null, 0);
+
+        btnScaledDrive.setButton(null, 0);
+        btnInvOrientation.setButton(null, 0);
+
+        btnSelDrv.setButton(null, 0);     //Added to test drive3
         btnHoldZero.setButton(null, 0);
         btnHold180.setButton(null, 0);
-        btnRampShooter.setButton(null, 0);
+
+        // Shooter
         btnFireShooter.setButton(null, 0);
-        btnIndex.setButton(null, 0);
+
+        // Snorfler
         btnToggleSnorf.setButton(null, 0);
         btnForwardSnorfler.setButton(null, 0);
-        btnLimeAim.setButton(null, 0);
-        btnLimeSearch.setButton(null, 0);
-        btnClimb.setButton(null, 0);
-        btnClimbOFF.setButton(null, 0);
-        limeLightOnOff.setButton(null, 0);
-        btnRstGyro.setButton(null, 0);
+        btnReverseSnorfler.setButton(null, 0);
+        povSnorfInOut.setPov(null, -1);
+
+        // Climb
+        axClimb.setAxis(null, 0);
+        btnClimbTop.setButton(null, 0);
+        btnClimbBot.setButton(null, 0);
+
+        //Flipper
+        btnFlipper.setButton(null, 0); //Extend Flipper down
+
+        //Antler
+        btnAntler.setButton(null, 0);  //Extend Antlers down
     }
 }
