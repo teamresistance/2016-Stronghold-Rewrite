@@ -41,6 +41,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         IO.compressorRelay.set(IO.compressor.enabled() ? Value.kForward : Value.kOff);
+        JS_IO.update();
     }
 
     /** This function is called once when autonomous is enabled. */
@@ -62,7 +63,6 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
-        JS_IO.update();
         Drive.update();
         Snorfler.update();
         TestLed.update();
