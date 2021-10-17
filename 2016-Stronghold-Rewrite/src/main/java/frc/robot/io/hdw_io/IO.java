@@ -37,7 +37,7 @@ public class IO {
     public static Solenoid antlerDn = new Solenoid(1);
 
     // Flipper
-    public static Solenoid flipperDn = new Solenoid(1);
+    public static Solenoid flipperDn = new Solenoid(4);
 
     // Lifter (Climber)
     public static Victor liftUP = new Victor(2); // Moves climber hook up
