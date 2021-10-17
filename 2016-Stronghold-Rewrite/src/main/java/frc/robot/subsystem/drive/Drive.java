@@ -7,18 +7,11 @@
 
 package frc.robot.subsystem.drive;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-
-import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.io.hdw_io.Encoder;
 import frc.robot.io.hdw_io.IO;
 import frc.robot.io.joysticks.JS_IO;
-import frc.util.PropMath;
 
 /**
  * Add your docs here.
@@ -121,30 +114,30 @@ public class Drive {
 
     // Update Drive mode. Called from Robot.
     public static void update() {
-        if(JS_IO.btnRstGyro.onButtonPressed()){     //Testing location
-        } 
+        // if(JS_IO.btnRstGyro.onButtonPressed()){     //Testing location
+        // } 
         determ();
         sdbUpdate();
         switch (state) {
             case 0: // Tank mode, no scaling. JSs to wheels.
-                cmdUpdate(-JS_IO.axLeftDrive.get(), -JS_IO.axRightDrive.get());
+                cmdUpdate(-JS_IO.axLeftY.get(), -JS_IO.axRightY.get());
                 scaled = false;
                 inverted = false;
                 // diffDrv_M.tankDrive(-JS_IO.axLeftDrive.get(), -JS_IO.axRightDrive.get());
                 // diffDrv_S.tankDrive(-JS_IO.axLeftDrive.get(), -JS_IO.axRightDrive.get());
                 break;
             case 1: // Tank mode, w/ scaling. JSs * scale to wheels.
-                cmdUpdate(scale * JS_IO.axLeftDrive.get(), scale * JS_IO.axRightDrive.get());
+                cmdUpdate(scale * JS_IO.axLeftY.get(), scale * JS_IO.axRightY.get());
                 scaled = true;
                 inverted = false;
                 break;
             case 2: // Tank mode, w/ scaling. Reversre direction, front & back. swaps axes
-                cmdUpdate(-scale * JS_IO.axRightDrive.get(), -scale * JS_IO.axLeftDrive.get());
+                cmdUpdate(-scale * JS_IO.axRightY.get(), -scale * JS_IO.axLeftY.get());
                 scaled = true;
                 inverted = true;
                 break;
             case 3: // reverse no scaled, swaps axes
-                cmdUpdate(JS_IO.axRightDrive.get(), JS_IO.axLeftDrive.get());
+                cmdUpdate(JS_IO.axRightY.get(), JS_IO.axLeftY.get());
                 scaled = false;
                 inverted = true;
                 break;
