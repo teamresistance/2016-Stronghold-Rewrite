@@ -83,6 +83,20 @@ public class _Framework_SM {
     private static void sbdUpdate() {
         SmartDashboard.putNumber("Snorfler/Motor", snorfMtr.get());
         SmartDashboard.putBoolean("Snorfler/Btn Toggle", btnToggleSnorf.isDown());
-
     }
+
+    /**
+     * @return the active state.
+     */
+    public static int getState(){
+        return state;
+    }
+
+    /**
+     * @return Encoded status of Leds: snorf, lift2, lift1.
+     */
+    public static int status(){
+        return 0;
+    }
+
 }
