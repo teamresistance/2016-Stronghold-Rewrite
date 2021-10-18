@@ -4,8 +4,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.io.hdw_io.IO;
 import frc.robot.io.joysticks.JS_IO;
 
+/**This class is used to test control & feedback
+ * from the hardware on the 2016-Stronghold robot.
+ */
 public class Test_Hdw {
-
+    /**
+     * Periodically Update commands to this subsystem. Normally called from
+     * autonomousPeriodic or teleopPeroic in Robot.
+     * <p>Other subsystems should be commented out when running this.
+     */
     public static void update(){
         //Solendoids
         IO.catapult.set(JS_IO.btnFireShooter.isDown());     //5, GP 6 (RB)
@@ -22,11 +29,12 @@ public class Test_Hdw {
         //Motors
         IO.leftDrv.set(JS_IO.axLeftY.get());                //0. 
         IO.rightDrv.set(JS_IO.axRightY.get());              //1. 
-        IO.liftUP.set(JS_IO.btnClimbTop.isDown() ? 1.0 :            //2, GP 7 (Reset)
-                      JS_IO.btnClimbBot.isDown() ? -1.0 : 0.0);     //2, GP 8 (Back)
         IO.snorfMtr.set(JS_IO.btnForwardSnorfler.isDown() ? 1.0 :       //3, GP 4 (Y)
                         JS_IO.btnReverseSnorfler.isDown() ? -1.0 : 0.0);//3, GP 3 (X)
-
+        // !!!----The following lifter MUST NOT exceed end stops ----!!!
+        IO.liftUP.set(JS_IO.btnClimbTop.isDown() ? 1.0 :            //2, GP 7 (Reset)
+                      JS_IO.btnClimbBot.isDown() ? -1.0 : 0.0);     //2, GP 8 (Back)
+  
         //Sensors
         SmartDashboard.putBoolean("Test/0. Snorf has ball", IO.snorfHasBall.get()); //DIO 0
         SmartDashboard.putBoolean("Test/1. Flip ES UP", IO.fliperIsUp.get()); //DIO 1

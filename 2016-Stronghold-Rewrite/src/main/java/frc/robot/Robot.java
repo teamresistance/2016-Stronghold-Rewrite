@@ -10,6 +10,7 @@ import frc.robot.io.hdw_io.IO;
 import frc.robot.io.joysticks.JS_IO;
 import frc.robot.subsystem.Snorfler;
 import frc.robot.subsystem.TestLed;
+import frc.robot.subsystem.Test_Hdw;
 import frc.robot.subsystem.drive.Drive;
 
 /**
@@ -66,6 +67,7 @@ public class Robot extends TimedRobot {
         Drive.update();
         Snorfler.update();
         TestLed.update();
+        // Test_Hdw.update();   //Other subsystems should be commented out.
     }
 
     /** This function is called once when the robot is disabled. */
