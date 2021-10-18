@@ -38,6 +38,8 @@ public class IO {
 
     // Flipper
     public static Solenoid flipperDn = new Solenoid(4);
+    public static DigitalInput fliperIsUp = new DigitalInput(1);
+    public static DigitalInput fliperIsDn = new DigitalInput(2);
 
     // Lifter (Climber)
     public static Victor liftUP = new Victor(2); // Moves climber hook up
