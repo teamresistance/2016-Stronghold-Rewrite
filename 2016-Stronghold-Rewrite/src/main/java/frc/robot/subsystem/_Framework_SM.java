@@ -23,7 +23,7 @@ public class _Framework_SM {
     private static Timer timer = new Timer(0);
 
     /**
-     * initialize objects for this SM. Ususally called from autonomoousInit or/and
+     * Initialize objects for this SM. Usually called from autonomousInit or/and
      * teleopInit
      */
     public static void init() {
