@@ -66,6 +66,7 @@ public class JS_IO {
     public static Axis axClimb = new Axis();            //To move climber up or dn
     public static Button btnClimbTop = new Button();    //Move climber to top
     public static Button btnClimbBot = new Button();    //Move climber to bottom
+    public static Button btnClimbExt = new Button();    //Extend climber.  For testing only
 
     //Flipper
     public static Button btnFlipper = new Button(); //Extend Flipper down
@@ -168,6 +169,7 @@ public class JS_IO {
         axClimb.setAxis(coJoystick, 1);
         btnClimbTop.setButton(coJoystick, 8);
         btnClimbBot.setButton(coJoystick, 9);
+        btnClimbExt.setButton(leftJoystick, 10);  //For testing hdw only
 
         //Flipper
         btnFlipper.setButton(coJoystick, 10); //Extend Flipper down
@@ -207,6 +209,7 @@ public class JS_IO {
         axClimb.setAxis(gamePad, 1);
         btnClimbTop.setButton(gamePad, 7);
         btnClimbBot.setButton(gamePad, 8);
+        btnClimbExt.setButton(gamePad, 9);  //For testing hdw only
 
         //Flipper
         btnFlipper.setButton(gamePad, 1); //Extend Flipper down
@@ -248,12 +251,13 @@ public class JS_IO {
         axClimb.setAxis(leftJoystick, 0);
         btnClimbTop.setButton(leftJoystick, 8);
         btnClimbBot.setButton(leftJoystick, 9);
+        btnClimbExt.setButton(leftJoystick, 10);  //For testing hdw only
 
         //Flipper
-        btnFlipper.setButton(coJoystick, 10); //Extend Flipper down
+        btnFlipper.setButton(rightJoystick, 10); //Extend Flipper down
 
         //Antler
-        btnAntler.setButton(coJoystick, 11);  //Extend Antlers down
+        btnAntler.setButton(rightJoystick, 11);  //Extend Antlers down
     }
 
     /**
