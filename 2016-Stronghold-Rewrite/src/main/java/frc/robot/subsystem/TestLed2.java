@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.io.hdw_io.IO;
+import frc.robot.io.hdw_io.InvertibleDigitalInput;
 import frc.robot.io.joysticks.Button;
 import frc.robot.io.joysticks.JS_IO;
 import frc.util.Timer;
@@ -13,7 +14,7 @@ import frc.util.Timer;
  * <p>Unless GP btn 5 is pressed then all leds are turned off.
  * <p>The sdb key "TestLed/0. Estop" immediately turns off all led if set true.
  */
-public class TestLed {
+public class TestLed2 {
 
     //Original code
     // public static void update(){
@@ -31,15 +32,17 @@ public class TestLed {
     private static  Solenoid frntLedLift2 = IO.frntLedLift2;
     private static  Solenoid frntLedSnorf = IO.frntLedSnorf;
 
+    private static InvertibleDigitalInput snorfHasBall = IO.snorfHasBall;
+
     // Reference or Initialize Joystick axis, buttons or pov
-    private static Button btnAllOn = JS_IO.btnScaledDrive;  //Left Bump Btn, 5
+    private static Button btnAllOn = JS_IO.btnToggleSnorf;  //Left Bump Btn, GP5
 
     // Create objects for this SM
     private static int state = 0;
     private static int tmpState = 0;
     private static boolean eStop = false;   //From Smartdashboard
 
-    private static Timer timer = new Timer(0.5);
+    private static Timer timer = new Timer(0.5);    //Used to delay on ALL Leds
 
     /**
      * initialize objects for this SM. Ususally called from autonomoousInit or/and
@@ -54,16 +57,18 @@ public class TestLed {
      * joystick button press or change of state of a DI.
      */
     private static void determ() {
-        //Encode switches into a single number
-        tmpState = liftTopStop.get() ? 1 : 0;
-        tmpState += liftBotStop.get() ? 2 : 0;
-        tmpState += liftMidSnsr.get() ? 4 : 0;
+        tmpState = allOnReq() ? 1 : 0;  //If all on state 1 else 0
+        //If timing required and existing state != 1,2, or3 (not timing) then start timing else reg.
+        state = (tmpState == 1 && (state > 1 && state < 5)) ? state : tmpState;
+        state = eStop ? 10 : state;     //STOP!
+    }
 
-        if(btnAllOn.isDown()) tmpState = 7; //GP Btn 5, all on
-
-        state = (tmpState == 7 && state > 7) ? state : tmpState;   //All on but with timer
-
-        state = eStop ? 0 : state;      //Emergency stop, all off
+    /**
+     * @return If ALL leds are being reqested.
+     */
+    private static boolean allOnReq(){
+        return btnAllOn.isDown() ||         //All on pressed 
+            (liftTopStop.get() && liftMidSnsr.get() && liftBotStop.get());   //or all switches on
     }
 
     /**
@@ -75,35 +80,21 @@ public class TestLed {
         sbdUpdate();// Update Smartdashboard stuff
 
         switch (state) {
-            case 0: // All Off - lift1, lift2, snorf
-                cmdUpdate(false, false, false);
+            case 0: // Default- send switches to  Leds lift1, lift2, snorf
+                cmdUpdate(liftBotStop.get(), liftTopStop.get(), liftMidSnsr.get());
                 break;
-            case 1: // 
-                cmdUpdate(false, false, true);
-                break;
-            case 2: // Followup state as needed.
-                cmdUpdate(false, true, false);
-                break;    
-            case 3: // Followup state as needed.
-                cmdUpdate(false, true, true);
-                break;
-            case 4: // Followup state as needed.
-                cmdUpdate(true, false, false);
-                break;
-            case 5: // Followup state as needed.
-                cmdUpdate(true, false, true);
-                break;
-            case 6: // Followup state as needed.
-                cmdUpdate(true, true, false);
-                break;
-            case 7: // All on.  Wait 1 sec before turning all on
+            case 1: // All on.  Set timer for 1 sec before turning all on
+                cmdUpdate(false, false, false); //Off for 1 sec then all on
                 timer.startTimer(1.0);
                 state++;
-            case 8:
+            case 2: // Wait 1 sec
                 if(timer.hasExpired()) state++;
                 break;
-            case 9: // Followup state as needed.
+            case 3: // All on
                 cmdUpdate(true, true, true);
+                break;
+            case 10: // eStop pressed, All OFF!
+                cmdUpdate(false, false, false);
                 break;
             default: // Always have a default, just incase.
                 cmdUpdate(false, false, false);
@@ -145,6 +136,8 @@ public class TestLed {
         SmartDashboard.putBoolean("TestLed/6. Lift Led2", frntLedLift2.get());
         SmartDashboard.putBoolean("TestLed/7. Lift Led1", frntLedLift1.get());
         SmartDashboard.putNumber( "TestLed/8. Led Status", statusLed());
+        SmartDashboard.putBoolean("TestLed/9. JS 5 All on", btnAllOn.isDown());
+        SmartDashboard.putBoolean("TestLed/10. tmp has ball", snorfHasBall.get());
     }
 
     /**

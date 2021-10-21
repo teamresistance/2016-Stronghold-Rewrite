@@ -10,6 +10,7 @@ import frc.robot.io.hdw_io.IO;
 import frc.robot.io.joysticks.JS_IO;
 import frc.robot.subsystem.Snorfler;
 import frc.robot.subsystem.TestLed;
+import frc.robot.subsystem.TestLed2;
 import frc.robot.subsystem.Test_Hdw;
 import frc.robot.subsystem.drive.Drive;
 
@@ -58,7 +59,7 @@ public class Robot extends TimedRobot {
     /** This function is called once when teleop is enabled. */
     @Override
     public void teleopInit() {
-        TestLed.init();
+        TestLed2.init();
     }
 
     /** This function is called periodically during operator control. */
@@ -66,7 +67,7 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         Drive.update();
         Snorfler.update();
-        TestLed.update();
+        TestLed2.update();
         // Test_Hdw.update();   //Other subsystems should be commented out.
     }
 
