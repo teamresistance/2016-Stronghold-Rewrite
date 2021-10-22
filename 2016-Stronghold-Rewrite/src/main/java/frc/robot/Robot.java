@@ -65,10 +65,10 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
-        Drive.update();
-        Snorfler.update();
-        TestLed2.update();
-        // Test_Hdw.update();   //Other subsystems should be commented out.
+        // Drive.update();
+        // Snorfler.update();
+        // TestLed2.update();
+        Test_Hdw.update();   //Other subsystems should be commented out.
     }
 
     /** This function is called once when the robot is disabled. */

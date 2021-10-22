@@ -19,7 +19,7 @@ public class Test_Hdw {
         IO.flipperDn.set(JS_IO.btnFlipper.isDown());        //4, GP 1 (A)
         IO.antlerDn.set(JS_IO.btnAntler.isDown());          //1, GP 2 (B)
 
-        IO.liftExt.set(JS_IO.btnClimbBot.isDown());         //2, GP 8 (Back)
+        IO.liftExt.set(JS_IO.btnClimbExt.isDown());         //2, GP 9 (JLB)
         IO.snorfExtSV.set(JS_IO.btnToggleSnorf.isDown());   //3, GP 5 (LB)
 
         IO.frntLedLift1.set(JS_IO.povSnorfInOut.is0());     //6, GP pov up
@@ -27,7 +27,8 @@ public class Test_Hdw {
         IO.frntLedSnorf.set(JS_IO.povSnorfInOut.is180());   //7, GP pov dn
 
         //Motors
-        IO.leftDrv.set(JS_IO.axLeftY.get());                //0. 
+        IO.leftDrv.set(-JS_IO.axLeftY.get());     
+                   //0. 
         IO.rightDrv.set(JS_IO.axRightY.get());              //1. 
         IO.snorfMtr.set(JS_IO.btnForwardSnorfler.isDown() ? 1.0 :       //3, GP 4 (Y)
                         JS_IO.btnReverseSnorfler.isDown() ? -1.0 : 0.0);//3, GP 3 (X)
@@ -43,9 +44,9 @@ public class Test_Hdw {
         SmartDashboard.putBoolean("Test/4. Lift ES Mid", IO.liftMidSnsr.get()); //DIO 4
         SmartDashboard.putBoolean("Test/5. Lift ES UP", IO.liftBotStop.get()); //DIO 5
 
-        SmartDashboard.putNumber("Test/10. Left Motor A", IO.pdp.getCurrent(0));    //PDP 0
-        SmartDashboard.putNumber("Test/11. Right Motor A", IO.pdp.getCurrent(1));   //PDP 1
-        SmartDashboard.putNumber("Test/14. Snorfler Motor", IO.pdp.getCurrent(14)); //PDP 14
-        SmartDashboard.putNumber("Test/99. Lifter Motor", IO.pdp.getCurrent(7));    //PDP ??
+        SmartDashboard.putNumber("Test/10. Left Motor A", IO.pdp.getCurrent(0));    //0 PDP 0
+        SmartDashboard.putNumber("Test/11. Right Motor A", IO.pdp.getCurrent(1));   //1 PDP 1
+        SmartDashboard.putNumber("Test/12. Lifter Motor", IO.pdp.getCurrent(7));    //2 PDP 2
+        SmartDashboard.putNumber("Test/13. Snorfler Motor", IO.pdp.getCurrent(14)); //3 PDP 14
     }
 }

@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class JS_IO {
     //Configure possible JS combinations.  Must match configJS().
-    public static int jsConfig = 0; // 0=Joysticks, 1=2 Joysticks, 2=gamePad, 4=Nintendo Pad
+    public static int jsConfig = 2; // 0=Joysticks, 1=2 Joysticks, 2=gamePad, 4=Nintendo Pad
     private static SendableChooser<Integer> chsr = new SendableChooser<Integer>();
     private static String[] chsrDesc = {"3-Joysticks", "2-Joysticks", "Gamepad"};
     private static int[] chsrNum = {0, 1, 2};
@@ -95,7 +95,7 @@ public class JS_IO {
         for(int i = 0; i < chsrDesc.length; i++){
             chsr.addOption(chsrDesc[i], chsrNum[i]);
         }
-        chsr.setDefaultOption(chsrDesc[0] + " (Default)", chsrNum[0]);   //Default MUST have a different name
+        chsr.setDefaultOption(chsrDesc[2] + " (Default)", chsrNum[2]);   //Default MUST have a different name
         SmartDashboard.putData("JS/Choice", chsr);
         SmartDashboard.putString("JS/Choosen", chsrDesc[chsr.getSelected()]);   //Put selected on sdb
     }
