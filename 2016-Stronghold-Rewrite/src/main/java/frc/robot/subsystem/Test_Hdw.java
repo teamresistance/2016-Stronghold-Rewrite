@@ -43,10 +43,11 @@ public class Test_Hdw {
         SmartDashboard.putBoolean("Test/3. Lift ES Top", IO.liftTopStop.get()); //DIO 3
         SmartDashboard.putBoolean("Test/4. Lift ES Mid", IO.liftMidSnsr.get()); //DIO 4
         SmartDashboard.putBoolean("Test/5. Lift ES UP", IO.liftBotStop.get()); //DIO 5
+        SmartDashboard.putNumber(" Test/7. Compressor Motor", IO.pdp.getCurrent(7));//auto PDP 7
 
         SmartDashboard.putNumber("Test/10. Left Motor A", IO.pdp.getCurrent(0));    //0 PDP 0
         SmartDashboard.putNumber("Test/11. Right Motor A", IO.pdp.getCurrent(1));   //1 PDP 1
-        SmartDashboard.putNumber("Test/12. Lifter Motor", IO.pdp.getCurrent(7));    //2 PDP 2
+        SmartDashboard.putNumber("Test/12. Lifter Motor", IO.pdp.getCurrent(2));    //2 PDP 2
         SmartDashboard.putNumber("Test/13. Snorfler Motor", IO.pdp.getCurrent(14)); //3 PDP 14
     }
 }
