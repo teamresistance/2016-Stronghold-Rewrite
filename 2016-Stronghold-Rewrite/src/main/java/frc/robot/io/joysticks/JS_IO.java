@@ -200,9 +200,9 @@ public class JS_IO {
         btnFireShooter.setButton(gamePad, 6);
 
         // Snorfler
-        btnToggleSnorf.setButton(gamePad, 5);
+        btnToggleSnorf.setButton(gamePad, 3); // switched with reverse button
         btnForwardSnorfler.setButton(gamePad, 4);
-        btnReverseSnorfler.setButton(gamePad, 3);
+        btnReverseSnorfler.setButton(gamePad, 5); // switched with toggleSnorf
         povSnorfInOut.setPov(gamePad, 0);
 
         // Climb

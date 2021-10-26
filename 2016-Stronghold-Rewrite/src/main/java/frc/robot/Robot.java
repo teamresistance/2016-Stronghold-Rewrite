@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Relay.Value;
 import frc.robot.io.hdw_io.IO;
 import frc.robot.io.joysticks.JS_IO;
 import frc.robot.subsystem.Snorfler;
+import frc.robot.subsystem.Snorfler_Jim;
 import frc.robot.subsystem.TestLed;
 import frc.robot.subsystem.TestLed2;
 import frc.robot.subsystem.Test_Hdw;
@@ -65,10 +66,11 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
-        // Drive.update();
+        Drive.update();
         // Snorfler.update();
-        // TestLed2.update();
-        Test_Hdw.update();   //Other subsystems should be commented out.
+        Snorfler.update();
+        TestLed2.update();
+        // Test_Hdw.update();   //Other subsystems should be commented out.
     }
 
     /** This function is called once when the robot is disabled. */
