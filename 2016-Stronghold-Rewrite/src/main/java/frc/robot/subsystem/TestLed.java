@@ -32,7 +32,7 @@ public class TestLed {
     private static  Solenoid frntLedSnorf = IO.frntLedSnorf;
 
     // Reference or Initialize Joystick axis, buttons or pov
-    private static Button btnAllOn = JS_IO.btnScaledDrive;  //Left Bump Btn, 5
+    private static Button btnAllOn = JS_IO.btnToggleSnorf;  //Left Bump Btn, 5
 
     // Create objects for this SM
     private static int state = 0;
@@ -46,7 +46,7 @@ public class TestLed {
      * teleopInit
      */
     public static void init() {
-        sbdInit();
+        sdbInit();
     }
 
     /**
@@ -72,7 +72,7 @@ public class TestLed {
      */
     public static void update() {
         determ();   // Check on external conditions
-        sbdUpdate();// Update Smartdashboard stuff
+        sdbUpdate();// Update Smartdashboard stuff
 
         switch (state) {
             case 0: // All Off - lift1, lift2, snorf
@@ -130,12 +130,12 @@ public class TestLed {
     }
 
     /** Initalize Smartdashbord items */
-    private static void sbdInit() {
+    private static void sdbInit() {
         SmartDashboard.putBoolean("TestLed/0. Estop", false);   //Needed to PUT it on the sdb
     }
 
     /** Update Smartdashbord items */
-    private static void sbdUpdate() {
+    private static void sdbUpdate() {
         eStop = SmartDashboard.getBoolean("TestLed/0. Estop", eStop);   //MUST match sdbInit key
         SmartDashboard.putNumber( "TestLed/1. state", state);
         SmartDashboard.putBoolean("TestLed/2. Top ES", liftTopStop.get());
