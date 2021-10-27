@@ -55,7 +55,7 @@ public class Snorfler_Jim {
             snorfMtr = btnSpit.isDown() ? Value.kReverse : Value.kForward;
         }
 
-        hasBallUpd();
+        hasBall = hasBallUpd();
     }
 
     /**
