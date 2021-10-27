@@ -23,10 +23,12 @@ public class Snorfler {
     private static Button btnToggleSnorf = JS_IO.btnToggleSnorf;
 
     private static int state = 0;
+    private static boolean wentDown = false;
 
     private static Timer timer = new Timer(0);
     // private static InvertibleDigitalInput snorfHasBall = IO.hasBallSensor; //
     // Banner snsr, ball at top of snorfler
+
 
     public static void update() {
         // // in and out function
@@ -57,18 +59,21 @@ public class Snorfler {
             snorfExtSV.set(true); //lower snorfler
             snorfMtr.setSpeed(1); //set snorfler to ball sucking
             if (btnToggleSnorf.onButtonPressed())
-            state++;
+            {
+                state++;
+                timer.startTimer(2.0);
+            }
             break;
             case 2: // snorfler coming up state
             snorfMtr.setSpeed(0); // turn off sucking
             snorfExtSV.set(false); // pick up snorfler
-            timer.startTimer(2); 
-            if (timer.hasExpired()) // wait two seconds for snorfler to come up
-            state++;
+            if (timer.hasExpired()) {  // wait two seconds for snorfler to come up
+                state++;
+                timer.startTimer(2);
+            }
             break;
             case 3: // ball spitting state
             snorfMtr.setSpeed(-1);
-            timer.startTimer(2); 
             if (timer.hasExpired()) // wait two seconds to spit balls then return to waiting state
             state = 0;
             break;
@@ -89,6 +94,7 @@ public class Snorfler {
         // SmartDashboard.putBoolean("btnForwardSnorfler", btnForwardSnorfler.isDown());
         // SmartDashboard.putBoolean("btnReverseSnorfler", btnReverseSnorfler.isDown());
         SmartDashboard.putBoolean("Snorfler Toggle", btnToggleSnorf.isDown());
+        SmartDashboard.putNumber("Snorfler State", state);
 
     }
 }
