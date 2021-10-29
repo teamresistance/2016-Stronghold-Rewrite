@@ -22,7 +22,7 @@ public class Flipper_Template {
 
 
     // Reference or Initialize Joystick axis, buttons or pov
-    public static Button btnFlipper = new Button();
+    public static Button btnFlipper = JS_IO.btnFlipper; //button gp12
 
 
     // Create objects for this SM
@@ -42,7 +42,7 @@ public class Flipper_Template {
      * joystick button press or change of state of a DI.
      */
     private static void determ() {
-
+        state = btnFlipper.isDown() ? 1 : 0;    
     }
 
     /**
@@ -56,14 +56,8 @@ public class Flipper_Template {
         switch (state) {
             case 0: // Off & off. State 0 is normally the default, off.
                 cmdUpdate(false);
-                timer.hasExpired(0.0, state);   //Set timer for next state
                 break;
             case 1: // Normally the kickoff. Ex. drop arm but wait 0.5 seconds to start motor
-                cmdUpdate(true);
-                if (timer.hasExpired(0.5, state)) // wait 0.5 seconds to start motor
-                    state++;
-                break;
-            case 2: // Followup state as needed.
                 cmdUpdate(true);
                 break;
             default: // Always have a default, just incase.
@@ -79,7 +73,7 @@ public class Flipper_Template {
      * Any safeties, things that if not handled will cause damage, should be here.
      */
     private static void cmdUpdate(boolean bCmd) {
-
+            flipperDn.set(bCmd);
     }
 
     /** Initalize Smartdashbord items */
