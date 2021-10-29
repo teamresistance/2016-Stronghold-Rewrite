@@ -4,10 +4,13 @@
 
 package frc.robot;
 
+import java.security.DrbgParameters.Capability;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Relay.Value;
 import frc.robot.io.hdw_io.IO;
 import frc.robot.io.joysticks.JS_IO;
+import frc.robot.subsystem.Catapult;
 import frc.robot.subsystem.Snorfler;
 import frc.robot.subsystem.Snorfler_Jim;
 import frc.robot.subsystem.TestLed;
@@ -60,17 +63,19 @@ public class Robot extends TimedRobot {
     /** This function is called once when teleop is enabled. */
     @Override
     public void teleopInit() {
-        Snorfler_Jim.init();
-        TestLed2.init();
+        Drive.init();
+        // Snorfler.init();
+        Catapult.init();
+        // TestLed2.init();
     }
 
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
         Drive.update();
-        // Snorfler.update();
-        Snorfler_Jim.update();
-        TestLed2.update();
+        Snorfler.update();        // Snorfler_Jim.update();
+        Catapult.update();
+        // TestLed2.update();
         // Test_Hdw.update();   //Other subsystems should be commented out.
     }
 

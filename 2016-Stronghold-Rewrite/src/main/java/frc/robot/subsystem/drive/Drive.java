@@ -27,7 +27,7 @@ public class Drive {
     private static boolean inverted;
     private static boolean scaled;
 
-    private static double scale = -0.5;
+    private static double scale = 0.5;
 
    
     // Assignments used by DiffDrv. Slaves sent same command.
@@ -49,7 +49,7 @@ public class Drive {
         invToggle = true;
         scaleToggle = true;
         inverted = false;
-        scaled = false;
+        scaled = true;
         // IO.drvMasterTSRX_L.set(ControlMode.Disabled, 0);
         // IO.drvMasterTSRX_R.set(ControlMode.Disabled, 0);
     }
