@@ -3,23 +3,36 @@ package frc.robot.subsystem;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.io.hdw_io.*;
 import frc.robot.io.joysticks.Button;
+import frc.robot.io.joysticks.Axis;
+import edu.wpi.first.wpilibj.Victor;
 import frc.robot.io.joysticks.JS_IO;
 import frc.util.Timer;
+import jdk.nashorn.api.tree.WhileLoopTree;
 
 /**This is a framework for a TR86 subsystem state machine.
  * <p>Some hardware references have been left as examples.
  */
-public class _Framework_SM {
+public class Lifter {
     // Reference or Initialize hardware
-    private static VictorSP snorfMtr = IO.snorfMtr;
-    private static Solenoid antlerDn = IO.antlerDn;
+    private static Victor liftUp = IO.liftUP;
+    private static ISolenoid liftExt = IO.liftExt;
+    private static DigitalInput liftTopStop = IO.liftTopStop;
+    private static DigitalInput liftMidSnsr = IO.liftMidSnsr;
+    private static DigitalInput liftBotStop = IO.liftBotStop;
+
+
 
 
     // Reference or Initialize Joystick axis, buttons or pov
-    private static Button btnToggleSnorf = JS_IO.btnToggleSnorf;
-    private static Button btnAntler = JS_IO.btnAntler;
+   private static Axis axClimb = JS_IO.axClimb;   //To move climber up or dn
+   private static Button btnClimbTop = JS_IO.btnClimbTop;   //Move climber to top
+   private static Button btnClimbBot = JS_IO.btnClimbBot;    //Move climber to bottom
+   private static Button btnClimbExt = JS_IO.btnClimbExt;    //Extend climber.  For testing only
+
+
 
     // Create objects for this SM
     private static int state = 0;
@@ -38,9 +51,21 @@ public class _Framework_SM {
      * joystick button press or change of state of a DI.
      */
     private static void determ() {
+        /*
+        Mode 0: initliaze for climbing = drive motor up to the top swtich so you can extend the lifter
+        Mode 1: actual climbing = move the climber down to the middle switch after the driver reaches so that you can climb
+        Mode 2: you need to move the climber back up (slowly) so that the robot can safely hit the floor
+        Mode 3: after the robot is back on the floor, then you need to unextend the lifter
+                and reset the climber to the middle
+        
+                *make sure to stop the motor in between extending and other movements
+        */
+
+        
 
     }
-
+    /*
+    
     /**
      * Periodically Update commands to this subsystem. Normally called from
      * autonomousPeriodic or teleopPeroic in Robot.
@@ -51,19 +76,19 @@ public class _Framework_SM {
 
         switch (state) {
             case 0: // Off & off. State 0 is normally the default, off.
-                cmdUpdate(false, 0.0);
+                cmdUpdate(0.0);
                 timer.hasExpired(0.0, state);   //Set timer for next state
                 break;
             case 1: // Normally the kickoff. Ex. drop arm but wait 0.5 seconds to start motor
-                cmdUpdate(true, 0.0);
+                cmdUpdate(0.0);
                 if (timer.hasExpired(0.5, state)) // wait 0.5 seconds to start motor
                     state++;
                 break;
             case 2: // Followup state as needed.
-                cmdUpdate(true, 1.0);
+                cmdUpdate(1.0);
                 break;
             default: // Always have a default, just incase.
-                cmdUpdate(false, 0.0);
+                cmdUpdate(0.0);
                 System.out.println("Bad state for this SMName - " + state);
         }
     }
@@ -74,8 +99,8 @@ public class _Framework_SM {
      * <p>
      * Any safeties, things that if not handled will cause damage, should be here.
      */
-    private static void cmdUpdate(boolean bCmd, double aCmd) {
-
+    private static void cmdUpdate(double motorSpeed) {
+        liftUp.set(motorSpeed);
     }
 
     /** Initalize Smartdashbord items */
@@ -84,8 +109,8 @@ public class _Framework_SM {
 
     /** Update Smartdashbord items */
     private static void sbdUpdate() {
-        SmartDashboard.putNumber("Snorfler/Motor", snorfMtr.get());
-        SmartDashboard.putBoolean("Snorfler/Btn Toggle", btnToggleSnorf.isDown());
+        //SmartDashboard.putNumber("Snorfler/Motor", snorfMtr.get());
+        //SmartDashboard.putBoolean("Snorfler/Btn Toggle", btnToggleSnorf.isDown());
     }
 
     /**

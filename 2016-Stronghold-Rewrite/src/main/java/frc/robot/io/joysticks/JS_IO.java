@@ -62,7 +62,7 @@ public class JS_IO {
     public static Button btnReverseSnorfler = new Button(); //Spitout the boulder
     public static Pov povSnorfInOut = new Pov();    //Alt. for Fwd/Rev
 
-    // Climb
+    // Lifter (Climb)
     public static Axis axClimb = new Axis();            //To move climber up or dn
     public static Button btnClimbTop = new Button();    //Move climber to top
     public static Button btnClimbBot = new Button();    //Move climber to bottom
@@ -166,11 +166,11 @@ public class JS_IO {
         povSnorfInOut.setPov(coJoystick, 0);
 
         // Climb
-        axClimb.setAxis(coJoystick, 1);
-        btnClimbTop.setButton(coJoystick, 8);
-        btnClimbBot.setButton(coJoystick, 9);
-        btnClimbExt.setButton(leftJoystick, 10);  //For testing hdw only
-
+        axClimb.setAxis(coJoystick, 1); //To move climber up or dn
+        btnClimbTop.setButton(coJoystick, 8); //Move climber to top
+        btnClimbBot.setButton(coJoystick, 9); //Move climber to bottom
+        btnClimbExt.setButton(leftJoystick, 10);  //Extend Climber, For testing hdw only
+        
         //Flipper
         btnFlipper.setButton(coJoystick, 10); //Extend Flipper down
 

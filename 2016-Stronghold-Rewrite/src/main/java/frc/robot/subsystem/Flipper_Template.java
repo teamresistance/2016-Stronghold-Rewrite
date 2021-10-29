@@ -1,25 +1,29 @@
 package frc.robot.subsystem;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.io.hdw_io.*;
 import frc.robot.io.joysticks.Button;
 import frc.robot.io.joysticks.JS_IO;
+
 import frc.util.Timer;
 
 /**This is a framework for a TR86 subsystem state machine.
  * <p>Some hardware references have been left as examples.
  */
-public class _Framework_SM {
+public class Flipper_Template {
     // Reference or Initialize hardware
-    private static VictorSP snorfMtr = IO.snorfMtr;
-    private static Solenoid antlerDn = IO.antlerDn;
+    public static Solenoid flipperDn = IO.flipperDn;
+    public static DigitalInput fliperIsUp = IO.fliperIsUp;
+    public static DigitalInput fliperIsDn = IO.fliperIsDn;
+
 
 
     // Reference or Initialize Joystick axis, buttons or pov
-    private static Button btnToggleSnorf = JS_IO.btnToggleSnorf;
-    private static Button btnAntler = JS_IO.btnAntler;
+    public static Button btnFlipper = new Button();
+
 
     // Create objects for this SM
     private static int state = 0;
@@ -51,19 +55,19 @@ public class _Framework_SM {
 
         switch (state) {
             case 0: // Off & off. State 0 is normally the default, off.
-                cmdUpdate(false, 0.0);
+                cmdUpdate(false);
                 timer.hasExpired(0.0, state);   //Set timer for next state
                 break;
             case 1: // Normally the kickoff. Ex. drop arm but wait 0.5 seconds to start motor
-                cmdUpdate(true, 0.0);
+                cmdUpdate(true);
                 if (timer.hasExpired(0.5, state)) // wait 0.5 seconds to start motor
                     state++;
                 break;
             case 2: // Followup state as needed.
-                cmdUpdate(true, 1.0);
+                cmdUpdate(true);
                 break;
             default: // Always have a default, just incase.
-                cmdUpdate(false, 0.0);
+                cmdUpdate(false);
                 System.out.println("Bad state for this SMName - " + state);
         }
     }
@@ -74,7 +78,7 @@ public class _Framework_SM {
      * <p>
      * Any safeties, things that if not handled will cause damage, should be here.
      */
-    private static void cmdUpdate(boolean bCmd, double aCmd) {
+    private static void cmdUpdate(boolean bCmd) {
 
     }
 
@@ -84,8 +88,7 @@ public class _Framework_SM {
 
     /** Update Smartdashbord items */
     private static void sbdUpdate() {
-        SmartDashboard.putNumber("Snorfler/Motor", snorfMtr.get());
-        SmartDashboard.putBoolean("Snorfler/Btn Toggle", btnToggleSnorf.isDown());
+        
     }
 
     /**
