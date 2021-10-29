@@ -20,9 +20,9 @@ public class Snorfler_Jim {
     private static double snorfMtrAmp(){ return IO.pdp.getCurrent(14); }
 
     // Reference or Initialize Joystick axis, buttons or pov
-    private static Button btnTglArmUpDn = JS_IO.btnToggleSnorf;    //Toggle arm Up/Dn
-    private static Button btnSpit = JS_IO.btnReverseSnorfler;    //Override mtr to release ball
-    private static Button btnSuck = JS_IO.btnForwardSnorfler;    //Override mtr to retrieve ball
+    private static Button btnTglArmUpDn = JS_IO.btnToggleSnorf; //Toggle arm Up/Dn GP 3
+    private static Button btnSpit = JS_IO.btnReverseSnorfler;   //Override mtr to release ball
+    private static Button btnSuck = JS_IO.btnForwardSnorfler;   //Override mtr to retrieve ball
 
     // Create objects for this SM
     private static int state = 0;
@@ -38,7 +38,7 @@ public class Snorfler_Jim {
      * teleopInit
      */
     public static void init() {
-        sbdInit();
+        sdbInit();
     }
 
     /**
@@ -64,7 +64,7 @@ public class Snorfler_Jim {
      */
     public static void update() {
         determ();   // Check on external conditions
-        sbdUpdate();// Update Smartdashboard stuff
+        sdbUpdate();// Update Smartdashboard stuff
 
         switch (state) {
             case 0: // Default, Up & Off
@@ -77,13 +77,34 @@ public class Snorfler_Jim {
                 break;
             case 2: // Arm Down & Off.  Leave dn for 0.5 sec., just incase.
                 cmdUpdate(true, Value.kOff);
-                timer.startTimer(0.5);
+                timer.startTimer(2.5);
                 state++;
-            case 3: // Arm Down & Off
+            case 3: // Arm Down & Off for 0.5 sec
                 cmdUpdate(true, Value.kOff);
                 if(timer.hasExpired()){
-                    state = 0;
+                    state++;
                     armDn = false;
+                }
+                break;
+            case 4: // Wait for Raise arm
+                cmdUpdate(false, Value.kOff);
+                timer.startTimer(1.5);
+                state++;
+            case 5: // Arm Down & Off for 0.5 sec
+                cmdUpdate(false, Value.kOff);
+                if(timer.hasExpired()){
+                    state++;
+                    armDn = false;
+                }
+                break;
+            case 6: // Start spitting
+                cmdUpdate(false, Value.kReverse);
+                timer.startTimer(1.5);
+                state++;
+            case 7: // Arm Down & Off for 0.5 sec
+                cmdUpdate(false, Value.kReverse);
+                if(timer.hasExpired()){
+                    state = 0;
                 }
                 break;
             default: // Always have a default, just incase.
@@ -102,6 +123,9 @@ public class Snorfler_Jim {
         snorfArmDnSV.set(armCmd);
 
         switch(mtrCmd){
+            case kOff:
+                snorfInOut.set(0.0);
+            break;
             case kForward:
                 snorfInOut.set(1.0);
             break;
@@ -114,13 +138,16 @@ public class Snorfler_Jim {
     }
 
     /** Initalize Smartdashbord items */
-    private static void sbdInit() {
+    private static void sdbInit() {
     }
 
     /** Update Smartdashbord items */
-    private static void sbdUpdate() {
+    private static void sdbUpdate() {
+        SmartDashboard.putNumber("Snorfler/state", state);
         SmartDashboard.putString("Snorfler/Motor", snorfMtr.getPrettyValue());
-        SmartDashboard.putBoolean("Snorfler/Btn Toggle", btnTglArmUpDn.isDown());
+        // SmartDashboard.putBoolean("Snorfler/Btn Toggle", btnTglArmUpDn.isDown());
+        SmartDashboard.putBoolean("Snorfler/hasBall", hasBall);
+        SmartDashboard.putNumber("Snorfler/Snorf Mtr Amps", snorfMtrAmp());
     }
 
     /**
@@ -138,7 +165,8 @@ public class Snorfler_Jim {
     }
 
     public static boolean hasBallUpd(){
-        return ballTimer.hasExpired(0.5, snorfMtrAmp() > 2.25);
+        boolean tmpB = snorfMtrAmp() > 3.0;
+        return tmpB && ballTimer.hasExpired(1.5, tmpB);
     }
 
 }
