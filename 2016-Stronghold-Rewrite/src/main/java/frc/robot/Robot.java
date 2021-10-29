@@ -60,6 +60,7 @@ public class Robot extends TimedRobot {
     /** This function is called once when teleop is enabled. */
     @Override
     public void teleopInit() {
+        Snorfler_Jim.init();
         TestLed2.init();
     }
 
@@ -68,7 +69,7 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         Drive.update();
         // Snorfler.update();
-        Snorfler.update();
+        Snorfler_Jim.update();
         TestLed2.update();
         // Test_Hdw.update();   //Other subsystems should be commented out.
     }
