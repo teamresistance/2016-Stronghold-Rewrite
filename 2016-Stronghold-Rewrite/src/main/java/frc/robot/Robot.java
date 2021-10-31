@@ -16,7 +16,9 @@ import frc.robot.subsystem.Snorfler_Jim;
 import frc.robot.subsystem.TestLed;
 import frc.robot.subsystem.TestLed2;
 import frc.robot.subsystem.Test_Hdw;
+import frc.robot.subsystem._SolenoidToJSB;
 import frc.robot.subsystem.drive.Drive;
+//import frc.robot.subsystem.drive.Drive2;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -26,6 +28,17 @@ import frc.robot.subsystem.drive.Drive;
  * project.
  */
 public class Robot extends TimedRobot {
+    /*
+     * The next 3 are examples of an Instantiations of a 
+     * solenoid interlocked to a JS button trigger.
+    */
+    public _SolenoidToJSB flipperSV = 
+        new _SolenoidToJSB("Flipper", IO.flipperDn, JS_IO.btnFlipper);
+    public _SolenoidToJSB antlerSV = 
+        new _SolenoidToJSB("Antler", IO.antlerDn, JS_IO.btnAntler);
+    public _SolenoidToJSB catapultSV = 
+        new _SolenoidToJSB("Catapult", IO.catapult, JS_IO.btnFireShooter);
+
     /**
      * This function is run when the robot is first started up and should be used
      * for any initialization code.
@@ -63,10 +76,13 @@ public class Robot extends TimedRobot {
     /** This function is called once when teleop is enabled. */
     @Override
     public void teleopInit() {
-        Drive.init();
+        // Drive.init();
         // Snorfler.init();
-        Catapult.init();
+        // Catapult.init();
         // TestLed2.init();
+        antlerSV.init();
+        flipperSV.init();
+        catapultSV.init();
     }
 
     /** This function is called periodically during operator control. */
@@ -74,9 +90,12 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         Drive.update();
         Snorfler.update();        // Snorfler_Jim.update();
-        Catapult.update();
+        // Catapult.update();
         // TestLed2.update();
         // Test_Hdw.update();   //Other subsystems should be commented out.
+        flipperSV.update();
+        antlerSV.update();
+        catapultSV.update();
     }
 
     /** This function is called once when the robot is disabled. */

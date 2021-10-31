@@ -14,6 +14,7 @@ import frc.robot.io.hdw_io.IO;
 import frc.robot.io.joysticks.JS_IO;
 
 /**
+ * 
  * Add your docs here.
  */
 public class Drive {
@@ -43,7 +44,7 @@ public class Drive {
     private static double hdgOut;
 
     public static void init() {
-        SmartDashboard.putNumber("Drive Scale", -0.5);
+        SmartDashboard.putNumber("Drive Scale", scale);
         cmdUpdate(0, 0);
         state = 0;
         invToggle = true;
@@ -110,6 +111,7 @@ public class Drive {
                 scaleToggle = !scaleToggle;
             }
         }
+        state = 1; // forced scaleing drive
     }
 
     // Update Drive mode. Called from Robot.
@@ -150,7 +152,7 @@ public class Drive {
 
     public static void sdbUpdate() {
         SmartDashboard.putNumber("Driver State", state);
-        scale = SmartDashboard.getNumber("Drive Scale", -0.5);
+        scale = SmartDashboard.getNumber("Drive Scale", scale);
         SmartDashboard.putBoolean("scaled", scaled);
         SmartDashboard.putBoolean("inverted", inverted);
 
